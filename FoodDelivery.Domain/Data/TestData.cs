@@ -1,6 +1,6 @@
-using FoodDelivery.Domain;
+using FoodDelivery.Domain.Entities;
 
-namespace FoodDelivery.Tests;
+namespace FoodDelivery.Domain.Data;
 
 public static class TestData
 {
@@ -175,81 +175,101 @@ public static class TestData
         new Customer
         {
             Id = 1,
-            FullName = "Мэддисон Илья Сергеевич",
+            LastName = "Мэдисон",
+            FirstName = "Илья",
+            Patronymic = "Сергеевич",
             Phone = "+79990000001",
-            DeliveryAddress = "ул. Ленина, 1"
+            DeliveryAddress = "Самара, ул. Ленина, д. 1"
         },
 
         new Customer
         {
             Id = 2,
-            FullName = "Жмышенко Валерий Альбертович",
+            LastName = "Зырянов",
+            FirstName = "Кирилл",
+            Patronymic = null,
             Phone = "+79990000002",
-            DeliveryAddress = "ул. Мира, 2"
+            DeliveryAddress = "Самара, ул. Пушкина, д. 10"
         },
 
         new Customer
         {
             Id = 3,
-            FullName = "Сидоров Алексей Сергеевич",
+            LastName = "Ван дер Сар",
+            FirstName = "Эдвин",
+            Patronymic = null,
             Phone = "+79990000003",
-            DeliveryAddress = "ул. Пушкина, 3"
+            DeliveryAddress = "Самара, ул. Гагарина, д. 15"
         },
 
         new Customer
         {
             Id = 4,
-            FullName = "Кузнецов Дмитрий Андреевич",
+            LastName = "Бобков",
+            FirstName = "Геннадий",
+            Patronymic = "Андреевич",
             Phone = "+79990000004",
-            DeliveryAddress = "ул. Гагарина, 4"
+            DeliveryAddress = "Самара, ул. Мира, д. 20"
         },
 
         new Customer
         {
             Id = 5,
-            FullName = "Смирнова Анна Викторовна",
+            LastName = "Кузнецов",
+            FirstName = "Дмитрий",
+            Patronymic = "Алексеевич",
             Phone = "+79990000005",
-            DeliveryAddress = "ул. Советская, 5"
+            DeliveryAddress = "Самара, ул. Советская, д. 5"
         },
 
         new Customer
         {
             Id = 6,
-            FullName = "Попова Мария Александровна",
+            LastName = "Гриффин",
+            FirstName = "Пётр",
+            Patronymic = null,
             Phone = "+79990000006",
-            DeliveryAddress = "ул. Центральная, 6"
+            DeliveryAddress = "Самара, ул. Центральная, д. 8"
         },
 
         new Customer
         {
             Id = 7,
-            FullName = "Васильев Сергей Олегович",
+            LastName = "Соколова",
+            FirstName = "Ольга",
+            Patronymic = "Викторовна",
             Phone = "+79990000007",
-            DeliveryAddress = "ул. Молодёжная, 7"
+            DeliveryAddress = "Москва, ул. Школьная, д. 12"
         },
 
         new Customer
         {
             Id = 8,
-            FullName = "Морозова Елена Игоревна",
+            LastName = "Петров",
+            FirstName = "Денис",
+            Patronymic = "Игоревич",
             Phone = "+79990000008",
-            DeliveryAddress = "ул. Новая, 8"
+            DeliveryAddress = "Самара, ул. Молодёжная, д. 7"
         },
 
         new Customer
         {
             Id = 9,
-            FullName = "Новиков Максим Романович",
+            LastName = "Морозова",
+            FirstName = "Екатерина",
+            Patronymic = "Сергеевна",
             Phone = "+79990000009",
-            DeliveryAddress = "ул. Школьная, 9"
+            DeliveryAddress = "Самара, ул. Новая, д. 18"
         },
 
         new Customer
         {
             Id = 10,
-            FullName = "Фёдорова Ольга Павловна",
+            LastName = "Александров",
+            FirstName = "Николай",
+            Patronymic = "Ильич",
             Phone = "+79990000010",
-            DeliveryAddress = "ул. Парковая, 10"
+            DeliveryAddress = "Самара, ул. Садовая, д. 25"
         }
     };
 
