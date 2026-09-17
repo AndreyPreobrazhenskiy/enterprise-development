@@ -178,7 +178,7 @@ public static class TestData
             LastName = "Мэдисон",
             FirstName = "Илья",
             Patronymic = "Сергеевич",
-            Phone = "+79990000001",
+            Phone = "+79270000228",
             DeliveryAddress = "Самара, ул. Ленина, д. 1"
         },
 
@@ -188,17 +188,17 @@ public static class TestData
             LastName = "Зырянов",
             FirstName = "Кирилл",
             Patronymic = null,
-            Phone = "+79990000002",
+            Phone = "+79270000666",
             DeliveryAddress = "Самара, ул. Пушкина, д. 10"
         },
 
         new Customer
         {
             Id = 3,
-            LastName = "Ван дер Сар",
-            FirstName = "Эдвин",
-            Patronymic = null,
-            Phone = "+79990000003",
+            LastName = "Купитман",
+            FirstName = "Иван",
+            Patronymic = "Натанович",
+            Phone = "+79080001337",
             DeliveryAddress = "Самара, ул. Гагарина, д. 15"
         },
 
@@ -208,17 +208,17 @@ public static class TestData
             LastName = "Бобков",
             FirstName = "Геннадий",
             Patronymic = "Андреевич",
-            Phone = "+79990000004",
+            Phone = "+79040000066",
             DeliveryAddress = "Самара, ул. Мира, д. 20"
         },
 
         new Customer
         {
             Id = 5,
-            LastName = "Кузнецов",
-            FirstName = "Дмитрий",
+            LastName = "Джопс",
+            FirstName = "Степан",
             Patronymic = "Алексеевич",
-            Phone = "+79990000005",
+            Phone = "+79270000077",
             DeliveryAddress = "Самара, ул. Советская, д. 5"
         },
 
@@ -228,18 +228,18 @@ public static class TestData
             LastName = "Гриффин",
             FirstName = "Пётр",
             Patronymic = null,
-            Phone = "+79990000006",
+            Phone = "+79080001109",
             DeliveryAddress = "Самара, ул. Центральная, д. 8"
         },
 
         new Customer
         {
             Id = 7,
-            LastName = "Соколова",
+            LastName = "Дупло",
             FirstName = "Ольга",
             Patronymic = "Викторовна",
-            Phone = "+79990000007",
-            DeliveryAddress = "Москва, ул. Школьная, д. 12"
+            Phone = "+79270000777",
+            DeliveryAddress = "Самара, ул. Школьная, д. 12"
         },
 
         new Customer
@@ -248,7 +248,7 @@ public static class TestData
             LastName = "Петров",
             FirstName = "Денис",
             Patronymic = "Игоревич",
-            Phone = "+79990000008",
+            Phone = "+79270000888",
             DeliveryAddress = "Самара, ул. Молодёжная, д. 7"
         },
 
@@ -258,17 +258,17 @@ public static class TestData
             LastName = "Морозова",
             FirstName = "Екатерина",
             Patronymic = "Сергеевна",
-            Phone = "+79990000009",
+            Phone = "+79270000089",
             DeliveryAddress = "Самара, ул. Новая, д. 18"
         },
 
         new Customer
         {
             Id = 10,
-            LastName = "Александров",
-            FirstName = "Николай",
-            Patronymic = "Ильич",
-            Phone = "+79990000010",
+            LastName = "Сопло",
+            FirstName = "Никита",
+            Patronymic = "Сергеевич",
+            Phone = "+79270001010",
             DeliveryAddress = "Самара, ул. Садовая, д. 25"
         }
     };
@@ -278,7 +278,7 @@ public static class TestData
         new Dish
         {
             Id = 1,
-            Name = "Пицца Пепперони",
+            Name = "Пицца Песто",
             WeightGrams = 500,
             Price = 750m,
             CategoryId = 1,
@@ -308,7 +308,7 @@ public static class TestData
         new Dish
         {
             Id = 4,
-            Name = "Чизбургер",
+            Name = "Чизбушка",
             WeightGrams = 320,
             Price = 500m,
             CategoryId = 2,
@@ -318,7 +318,7 @@ public static class TestData
         new Dish
         {
             Id = 5,
-            Name = "Картофель фри",
+            Name = "Луковые кольца",
             WeightGrams = 150,
             Price = 220m,
             CategoryId = 3,
@@ -328,7 +328,7 @@ public static class TestData
         new Dish
         {
             Id = 6,
-            Name = "Цезарь с курицей",
+            Name = "Греческий салат",
             WeightGrams = 280,
             Price = 420m,
             CategoryId = 4,
@@ -338,7 +338,7 @@ public static class TestData
         new Dish
         {
             Id = 7,
-            Name = "Борщ",
+            Name = "Солянка",
             WeightGrams = 350,
             Price = 380m,
             CategoryId = 5,
@@ -348,7 +348,7 @@ public static class TestData
         new Dish
         {
             Id = 8,
-            Name = "Паста Карбонара",
+            Name = "Паста Аррабиата",
             WeightGrams = 400,
             Price = 590m,
             CategoryId = 6,
@@ -358,7 +358,7 @@ public static class TestData
         new Dish
         {
             Id = 9,
-            Name = "Роллы Филадельфия",
+            Name = "Роллы с тунцом",
             WeightGrams = 250,
             Price = 680m,
             CategoryId = 7,
@@ -368,7 +368,7 @@ public static class TestData
         new Dish
         {
             Id = 10,
-            Name = "Чизкейк",
+            Name = "Торт медовик",
             WeightGrams = 180,
             Price = 300m,
             CategoryId = 8,
@@ -489,7 +489,7 @@ public static class TestData
             Customer = Customers[7],
             RestaurantId = 5,
             Restaurant = Restaurants[4],
-            CreatedAt = new DateTime(2026, 9, 8, 19, 0, 0),
+            CreatedAt = new DateTime(2026, 9, 8, 19, 45, 0),
             DeliveredAt = new DateTime(2026, 9, 8, 19, 55, 0),
             TotalAmount = 1150m
         },
@@ -502,7 +502,7 @@ public static class TestData
             RestaurantId = 6,
             Restaurant = Restaurants[5],
             CreatedAt = new DateTime(2026, 9, 9, 10, 0, 0),
-            DeliveredAt = new DateTime(2026, 9, 9, 10, 15, 0),
+            DeliveredAt = new DateTime(2026, 9, 9, 10, 10, 0),
             TotalAmount = 590m
         },
 
