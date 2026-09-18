@@ -377,7 +377,7 @@ public static class TestData
 
         new Dish
         {
-            Id = 9,
+            Id = 11,
             Name = "Капучино",
             WeightGrams = 300,
             Price = 450m,
@@ -387,7 +387,7 @@ public static class TestData
 
         new Dish
         {
-            Id = 10,
+            Id = 12,
             Name = "Сырники",
             WeightGrams = 250,
             Price = 350m,
