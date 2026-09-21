@@ -4,19 +4,15 @@ namespace FoodDelivery.Tests;
 
 public class OrderTests
 {
-    [Fact]
-
     /// <summary>
     /// Задание: Вывести список заказов с минимальным временем доставки.
     /// </summary>
+    [Fact]
     public void OrdersWithMinDeliveryTime()
     {
         var orders = TestData.Orders;
 
-        var expected = new List<int>
-        {
-            8, 9
-        };
+        int[] expected = [8, 9];
 
         var minimumDeliveryTime = orders
             .Select(order => order.DeliveredAt - order.CreatedAt)

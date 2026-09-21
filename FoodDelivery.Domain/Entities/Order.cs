@@ -8,42 +8,42 @@ public class Order
     /// <summary>
     /// Уникальный идентификатор заказа
     /// </summary>
-    public int Id { get; set; }
+    public required int Id { get; set; }
 
     /// <summary>
     /// Идентификатор клиента, оформившего заказ
     /// </summary>
-    public int CustomerId { get; set; }
+    public required int CustomerId { get; set; }
 
     /// <summary>
     /// Клиент, оформивший заказ
     /// </summary>
-    public Customer Customer { get; set; } = null!;
+    public required Customer Customer { get; set; }
 
     /// <summary>
     /// Идентификатор ресторана, в котором оформлен заказ
     /// </summary>
-    public int RestaurantId { get; set; }
+    public required int RestaurantId { get; set; }
 
     /// <summary>
     /// Ресторан, в котором оформлен заказ
     /// </summary>
-    public Restaurant Restaurant { get; set; } = null!;
+    public required Restaurant Restaurant { get; set; }
 
     /// <summary>
     /// Дата и время оформления заказа
     /// </summary>
-    public DateTime CreatedAt { get; set; }
+    public required DateTime CreatedAt { get; set; }
 
     /// <summary>
     /// Дата и время доставки заказа
     /// </summary>
-    public DateTime DeliveredAt { get; set; }
+    public required DateTime DeliveredAt { get; set; }
 
     /// <summary>
     /// Итоговая сумма заказа в рублях
     /// </summary>
-    public decimal TotalAmount { get; set; }
+    public decimal TotalAmount => Items.Sum(item => item.Dish.Price * item.Quantity);
 
     /// <summary>
     /// Список позиций заказа

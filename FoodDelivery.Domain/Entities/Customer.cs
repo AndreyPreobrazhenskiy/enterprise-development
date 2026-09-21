@@ -8,21 +8,17 @@ public class Customer
     /// <summary>
     /// Уникальный идентификатор клиента
     /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
-    /// Полное имя разделено, "чтобы не страдать из-за парсинга полных имен, где пробелы могут быть не только разделителями, но и частью имени/фамилии/отчества"
-    /// </summary>
+    public required int Id { get; set; }
 
     /// <summary>
     /// Фамилия клиента
     /// </summary>
-    public string LastName { get; set; } = string.Empty;
+    public required string LastName { get; set; }
 
     /// <summary>
     /// Имя клиента
     /// </summary>
-    public string FirstName { get; set; } = string.Empty;
+    public required string FirstName { get; set; }
 
     /// <summary>
     /// Отчество клиента (может отсутствовать)
@@ -32,10 +28,10 @@ public class Customer
     /// <summary>
     /// Номер телефона клиента
     /// </summary>
-    public string Phone { get; set; } = string.Empty;
+    public required string Phone { get; set; }
 
     /// <summary>
     /// Адрес доставки клиента
     /// </summary>
-    public string DeliveryAddress { get; set; } = string.Empty;
+    public required string DeliveryAddress { get; set; }
 }

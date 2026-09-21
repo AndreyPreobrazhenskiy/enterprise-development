@@ -4,41 +4,23 @@ namespace FoodDelivery.Tests;
 
 public class CategoryTests
 {
-    [Fact]
     /// <summary>
     /// Задание: Вывести сводную информацию о заказах (число заказов, средняя сумма заказа, общая сумма заказа) по каждой категории блюд за указанный период.
     /// </summary>
-    public void OrdersByCategoryForSelectedPeriod()
+    [Theory]
+    [InlineData(1, 2, 1725, 3450)]
+    [InlineData(2, 2, 1045, 2090)]
+    [InlineData(3, 2, 1045, 2090)]
+    public void OrdersByCategoryForSelectedPeriod(
+        int categoryId,
+        int expectedOrderCount,
+        decimal expectedAvgOrderAmount,
+        decimal expectedTotalOrderAmount)
     {
         var periodStart = new DateTime(2026, 9, 1);
         var periodEnd = new DateTime(2026, 9, 5);
 
-        var expected = new[]
-        {
-            new
-            {
-                CategoryId = 1,
-                OrderCount = 2,
-                AvgOrderAmount = 1725m,
-                TotalOrderAmount = 3450m
-            },
-            new
-            {
-                CategoryId = 2,
-                OrderCount = 2,
-                AvgOrderAmount = 1085m,
-                TotalOrderAmount = 2170m
-            },
-            new
-            {
-                CategoryId = 3,
-                OrderCount = 2,
-                AvgOrderAmount = 1085m,
-                TotalOrderAmount = 2170m
-            }
-        };
-
-        var summary = TestData.Orders
+        var orders = TestData.Orders
             .Where(order =>
                 order.CreatedAt >= periodStart &&
                 order.CreatedAt < periodEnd)
@@ -47,48 +29,20 @@ public class CategoryTests
                 Order = order,
                 CategoryId = item.Dish.CategoryId
             }))
-            .GroupBy(item => item.CategoryId)
-            .Select(group => new
-            {
-                CategoryId = group.Key,
-
-                OrderCount = group
-                    .Select(item => item.Order.Id)
-                    .Distinct()
-                    .Count(),
-
-                AvgOrderAmount = group
-                    .Select(item => item.Order)
-                    .DistinctBy(order => order.Id)
-                    .Average(order => order.TotalAmount),
-
-                TotalOrderAmount = group
-                    .Select(item => item.Order)
-                    .DistinctBy(order => order.Id)
-                    .Sum(order => order.TotalAmount)
-            })
-            .OrderBy(item => item.CategoryId)
+            .Where(item => item.CategoryId == categoryId)
+            .DistinctBy(item => item.Order.Id)
             .ToList();
 
-        Assert.Equal(expected.Length, summary.Count);
+        var orderCount = orders.Count;
 
-        for (var i = 0; i < expected.Length; i++)
-        {
-            Assert.Equal(
-                expected[i].CategoryId,
-                summary[i].CategoryId);
+        var avgOrderAmount = orders
+            .Average(item => item.Order.TotalAmount);
 
-            Assert.Equal(
-                expected[i].OrderCount,
-                summary[i].OrderCount);
+        var totalOrderAmount = orders
+            .Sum(item => item.Order.TotalAmount);
 
-            Assert.Equal(
-                expected[i].AvgOrderAmount,
-                summary[i].AvgOrderAmount);
-
-            Assert.Equal(
-                expected[i].TotalOrderAmount,
-                summary[i].TotalOrderAmount);
-        }
+        Assert.Equal(expectedOrderCount, orderCount);
+        Assert.Equal(expectedAvgOrderAmount, avgOrderAmount);
+        Assert.Equal(expectedTotalOrderAmount, totalOrderAmount);
     }
 }

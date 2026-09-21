@@ -8,30 +8,25 @@ public class OrderItem
     /// <summary>
     /// Уникальный идентификатор позиции заказа
     /// </summary>
-    public int Id { get; set; }
+    public required int Id { get; set; }
 
     /// <summary>
     /// Идентификатор заказа
     /// </summary>
-    public int OrderId { get; set; }
+    public required int OrderId { get; set; }
 
     /// <summary>
     /// Идентификатор блюда
     /// </summary>
-    public int DishId { get; set; }
+    public required int DishId { get; set; }
 
     /// <summary>
     /// Блюдо, добавленное в заказ
     /// </summary>
-    public Dish Dish { get; set; } = null!;
+    public required Dish Dish { get; set; }
 
     /// <summary>
     /// Количество единиц блюда
     /// </summary>
-    public int Quantity { get; set; }
-
-    /// <summary>
-    /// Цена одной единицы блюда на момент оформления заказа
-    /// </summary>
-    public decimal Price { get; set; }
+    public required int Quantity { get; set; }
 }

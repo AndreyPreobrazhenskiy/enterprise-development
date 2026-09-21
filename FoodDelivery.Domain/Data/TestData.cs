@@ -407,7 +407,6 @@ public static class TestData
             Restaurant = Restaurants[0],
             CreatedAt = new DateTime(2026, 9, 1, 12, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 1, 12, 35, 0),
-            TotalAmount = 1400m
         },
 
         new Order
@@ -419,7 +418,6 @@ public static class TestData
             Restaurant = Restaurants[0],
             CreatedAt = new DateTime(2026, 9, 2, 13, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 2, 13, 50, 0),
-            TotalAmount = 2050m
         },
 
         new Order
@@ -431,7 +429,6 @@ public static class TestData
             Restaurant = Restaurants[1],
             CreatedAt = new DateTime(2026, 9, 3, 14, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 3, 14, 25, 0),
-            TotalAmount = 950m
         },
 
         new Order
@@ -443,7 +440,6 @@ public static class TestData
             Restaurant = Restaurants[1],
             CreatedAt = new DateTime(2026, 9, 4, 15, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 4, 15, 45, 0),
-            TotalAmount = 1220m
         },
 
         new Order
@@ -455,7 +451,6 @@ public static class TestData
             Restaurant = Restaurants[2],
             CreatedAt = new DateTime(2026, 9, 5, 16, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 5, 16, 30, 0),
-            TotalAmount = 1360m
         },
 
         new Order
@@ -467,7 +462,6 @@ public static class TestData
             Restaurant = Restaurants[2],
             CreatedAt = new DateTime(2026, 9, 6, 17, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 6, 17, 40, 0),
-            TotalAmount = 1270m
         },
 
         new Order
@@ -479,7 +473,6 @@ public static class TestData
             Restaurant = Restaurants[3],
             CreatedAt = new DateTime(2026, 9, 7, 18, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 7, 18, 20, 0),
-            TotalAmount = 970m
         },
 
         new Order
@@ -491,7 +484,6 @@ public static class TestData
             Restaurant = Restaurants[4],
             CreatedAt = new DateTime(2026, 9, 8, 19, 45, 0),
             DeliveredAt = new DateTime(2026, 9, 8, 19, 55, 0),
-            TotalAmount = 1150m
         },
 
         new Order
@@ -503,7 +495,6 @@ public static class TestData
             Restaurant = Restaurants[5],
             CreatedAt = new DateTime(2026, 9, 9, 10, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 9, 10, 10, 0),
-            TotalAmount = 590m
         },
 
         new Order
@@ -515,7 +506,6 @@ public static class TestData
             Restaurant = Restaurants[0],
             CreatedAt = new DateTime(2026, 9, 10, 11, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 10, 11, 30, 0),
-            TotalAmount = 1050m
         }
     };
 
@@ -528,7 +518,6 @@ public static class TestData
             DishId = 1,
             Dish = Dishes[0],
             Quantity = 1,
-            Price = 750m
         },
 
         new OrderItem
@@ -538,7 +527,6 @@ public static class TestData
             DishId = 2,
             Dish = Dishes[1],
             Quantity = 1,
-            Price = 650m
         },
 
         new OrderItem
@@ -548,7 +536,6 @@ public static class TestData
             DishId = 1,
             Dish = Dishes[0],
             Quantity = 1,
-            Price = 750m
         },
 
         new OrderItem
@@ -558,7 +545,6 @@ public static class TestData
             DishId = 2,
             Dish = Dishes[1],
             Quantity = 2,
-            Price = 650m
         },
 
         new OrderItem
@@ -568,7 +554,6 @@ public static class TestData
             DishId = 3,
             Dish = Dishes[2],
             Quantity = 1,
-            Price = 650m
         },
 
         new OrderItem
@@ -578,7 +563,6 @@ public static class TestData
             DishId = 5,
             Dish = Dishes[4],
             Quantity = 1,
-            Price = 220m
         },
 
         new OrderItem
@@ -588,7 +572,6 @@ public static class TestData
             DishId = 4,
             Dish = Dishes[3],
             Quantity = 2,
-            Price = 500m
         },
 
         new OrderItem
@@ -598,7 +581,6 @@ public static class TestData
             DishId = 5,
             Dish = Dishes[4],
             Quantity = 1,
-            Price = 220m
         },
 
         new OrderItem
@@ -608,7 +590,6 @@ public static class TestData
             DishId = 6,
             Dish = Dishes[5],
             Quantity = 1,
-            Price = 420m
         },
 
         new OrderItem
@@ -618,7 +599,6 @@ public static class TestData
             DishId = 9,
             Dish = Dishes[8],
             Quantity = 1,
-            Price = 680m
         },
 
         new OrderItem
@@ -628,7 +608,6 @@ public static class TestData
             DishId = 9,
             Dish = Dishes[8],
             Quantity = 1,
-            Price = 680m
         },
 
         new OrderItem
@@ -638,7 +617,6 @@ public static class TestData
             DishId = 10,
             Dish = Dishes[9],
             Quantity = 1,
-            Price = 300m
         },
 
         new OrderItem
@@ -648,7 +626,6 @@ public static class TestData
             DishId = 7,
             Dish = Dishes[6],
             Quantity = 1,
-            Price = 380m
         },
 
         new OrderItem
@@ -658,7 +635,6 @@ public static class TestData
             DishId = 8,
             Dish = Dishes[7],
             Quantity = 1,
-            Price = 590m
         },
 
         new OrderItem
@@ -668,7 +644,6 @@ public static class TestData
             DishId = 3,
             Dish = Dishes[2],
             Quantity = 1,
-            Price = 650m
         },
 
         new OrderItem
@@ -678,7 +653,6 @@ public static class TestData
             DishId = 4,
             Dish = Dishes[3],
             Quantity = 1,
-            Price = 500m
         },
 
         new OrderItem
@@ -688,7 +662,6 @@ public static class TestData
             DishId = 8,
             Dish = Dishes[7],
             Quantity = 1,
-            Price = 590m
         },
 
         new OrderItem
@@ -698,7 +671,6 @@ public static class TestData
             DishId = 1,
             Dish = Dishes[0],
             Quantity = 1,
-            Price = 750m
         },
 
         new OrderItem
@@ -708,7 +680,6 @@ public static class TestData
             DishId = 5,
             Dish = Dishes[4],
             Quantity = 1,
-            Price = 220m
         }
     };
 

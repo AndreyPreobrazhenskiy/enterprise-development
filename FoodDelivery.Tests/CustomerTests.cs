@@ -4,19 +4,15 @@ namespace FoodDelivery.Tests;
 
 public class CustomerTests
 {
-    [Fact]
-
     /// <summary>
     /// Задание: Вывести сведения обо всех клиентах, заказывавших в выбранном ресторане, упорядочить по ФИО.
     /// </summary>
+    [Fact]
     public void CustomersWhoOrderedFromSelectedRestaurant()
     {
         var selectedRestaurantId = 1;
 
-        var expected = new List<int>
-        {
-            2, 1, 10
-        };
+        int[] expected = [2, 1, 10];
 
         var customers = TestData.Orders
             .Where(order => order.RestaurantId == selectedRestaurantId)
@@ -31,10 +27,10 @@ public class CustomerTests
         Assert.Equal(expected, customers);
     }
 
-    [Fact]
     /// <summary>
     /// Задание: Вывести информацию о клиенте, который потратил на доставку наибольшую сумму за все время работы приложения.
     /// </summary>
+    [Fact]
     public void CustomerWithMaxTotalOrderAmount()
     {
         var expectedCustomerId = 2;
