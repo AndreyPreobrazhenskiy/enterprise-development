@@ -13,7 +13,7 @@ public class CustomerTests
     [Fact]
     public void CustomersWhoOrderedFromSelectedRestaurant()
     {
-        var selectedRestaurantId = 17;
+        var selectedRestaurantId = 1;
 
         var expected = new[] { 2, 1 };
 

@@ -71,7 +71,7 @@ public static class TestData
     {
         new Restaurant
         {
-            Id = 17,
+            Id = 1,
             Name = "Додо Пицца",
             Address = "просп. Ленина, 1",
             Rating = 4.8,
@@ -81,7 +81,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 42,
+            Id = 2,
             Name = "Burger King",
             Address = "ул. Тухачевского, 80",
             Rating = 4.6,
@@ -91,7 +91,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 8,
+            Id = 3,
             Name = "Tanuki",
             Address = "ул. Коммунистическая, 17",
             Rating = 4.9,
@@ -101,7 +101,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 31,
+            Id = 4,
             Name = "Salad Bar",
             Address = "ул. Гагарина, 66",
             Rating = 4.3,
@@ -111,7 +111,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 56,
+            Id = 5,
             Name = "Мушмула",
             Address = "ул. Галактионовская, 133",
             Rating = 4.6,
@@ -121,7 +121,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 23,
+            Id = 6,
             Name = "Дари Дури",
             Address = "ул. Дачная, 12",
             Rating = 4.4,
@@ -131,7 +131,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 74,
+            Id = 7,
             Name = "Surf Coffee",
             Address = "ул. Полевая, 28",
             Rating = 4.8,
@@ -141,7 +141,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 15,
+            Id = 8,
             Name = "Чипа Лучо",
             Address = "ул. Ново-Садовая, 228",
             Rating = 4.2,
@@ -151,7 +151,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 63,
+            Id = 9,
             Name = "Белотурка",
             Address = "ул. Молодогвардейская,127",
             Rating = 4.8,
@@ -161,7 +161,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 91,
+            Id = 10,
             Name = "Gellert",
             Address = "ул. Владимирская, 38",
             Rating = 4.0,
@@ -283,7 +283,7 @@ public static class TestData
             Price = 750m,
             CategoryId = 1,
             Category = Categories[0],
-            RestaurantId = 17,
+            RestaurantId = 1,
             Restaurant = Restaurants[0]
         },
 
@@ -295,7 +295,7 @@ public static class TestData
             Price = 650m,
             CategoryId = 1,
             Category = Categories[0],
-            RestaurantId = 17,
+            RestaurantId = 1,
             Restaurant = Restaurants[0]
         },
 
@@ -307,7 +307,7 @@ public static class TestData
             Price = 650m,
             CategoryId = 2,
             Category = Categories[1],
-            RestaurantId = 42,
+            RestaurantId = 2,
             Restaurant = Restaurants[1]
         },
 
@@ -319,7 +319,7 @@ public static class TestData
             Price = 500m,
             CategoryId = 2,
             Category = Categories[1],
-            RestaurantId = 42,
+            RestaurantId = 2,
             Restaurant = Restaurants[1]
         },
 
@@ -331,7 +331,7 @@ public static class TestData
             Price = 220m,
             CategoryId = 3,
             Category = Categories[2],
-            RestaurantId = 42,
+            RestaurantId = 2,
             Restaurant = Restaurants[1]
         },
 
@@ -343,7 +343,7 @@ public static class TestData
             Price = 420m,
             CategoryId = 4,
             Category = Categories[3],
-            RestaurantId = 31,
+            RestaurantId = 4,
             Restaurant = Restaurants[3]
         },
 
@@ -355,7 +355,7 @@ public static class TestData
             Price = 380m,
             CategoryId = 5,
             Category = Categories[4],
-            RestaurantId = 56,
+            RestaurantId = 5,
             Restaurant = Restaurants[4]
         },
 
@@ -367,7 +367,7 @@ public static class TestData
             Price = 590m,
             CategoryId = 6,
             Category = Categories[5],
-            RestaurantId = 15,
+            RestaurantId = 8,
             Restaurant = Restaurants[7]
         },
 
@@ -379,7 +379,7 @@ public static class TestData
             Price = 680m,
             CategoryId = 7,
             Category = Categories[6],
-            RestaurantId = 8,
+            RestaurantId = 3,
             Restaurant = Restaurants[2]
         },
 
@@ -391,7 +391,7 @@ public static class TestData
             Price = 300m,
             CategoryId = 8,
             Category = Categories[7],
-            RestaurantId = 63,
+            RestaurantId = 9,
             Restaurant = Restaurants[8]
         },
 
@@ -403,7 +403,7 @@ public static class TestData
             Price = 450m,
             CategoryId = 9,
             Category = Categories[8],
-            RestaurantId = 74,
+            RestaurantId = 7,
             Restaurant = Restaurants[6]
         },
 
@@ -415,7 +415,7 @@ public static class TestData
             Price = 350m,
             CategoryId = 10,
             Category = Categories[9],
-            RestaurantId = 63,
+            RestaurantId = 9,
             Restaurant = Restaurants[8]
         }
     };
@@ -425,9 +425,9 @@ public static class TestData
         new Order
         {
             Id = 1,
-            CustomerId = 17,
+            CustomerId = 1,
             Customer = Customers[0],
-            RestaurantId = 17,
+            RestaurantId = 1,
             Restaurant = Restaurants[0],
             CreatedAt = new DateTime(2026, 9, 1, 12, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 1, 12, 35, 0),
@@ -438,7 +438,7 @@ public static class TestData
             Id = 2,
             CustomerId = 2,
             Customer = Customers[1],
-            RestaurantId = 17,
+            RestaurantId = 1,
             Restaurant = Restaurants[0],
             CreatedAt = new DateTime(2026, 9, 2, 13, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 2, 13, 50, 0),
@@ -449,7 +449,7 @@ public static class TestData
             Id = 3,
             CustomerId = 3,
             Customer = Customers[2],
-            RestaurantId = 42,
+            RestaurantId = 2,
             Restaurant = Restaurants[1],
             CreatedAt = new DateTime(2026, 9, 3, 14, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 3, 14, 25, 0),
@@ -460,7 +460,7 @@ public static class TestData
             Id = 4,
             CustomerId = 4,
             Customer = Customers[3],
-            RestaurantId = 42,
+            RestaurantId = 2,
             Restaurant = Restaurants[1],
             CreatedAt = new DateTime(2026, 9, 4, 15, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 4, 15, 45, 0),
@@ -471,7 +471,7 @@ public static class TestData
             Id = 5,
             CustomerId = 5,
             Customer = Customers[4],
-            RestaurantId = 8,
+            RestaurantId = 3,
             Restaurant = Restaurants[2],
             CreatedAt = new DateTime(2026, 9, 5, 16, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 5, 16, 30, 0),
@@ -482,7 +482,7 @@ public static class TestData
             Id = 6,
             CustomerId = 6,
             Customer = Customers[5],
-            RestaurantId = 8,
+            RestaurantId = 3,
             Restaurant = Restaurants[2],
             CreatedAt = new DateTime(2026, 9, 6, 17, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 6, 17, 40, 0),
@@ -493,7 +493,7 @@ public static class TestData
             Id = 7,
             CustomerId = 7,
             Customer = Customers[6],
-            RestaurantId = 31,
+            RestaurantId = 4,
             Restaurant = Restaurants[3],
             CreatedAt = new DateTime(2026, 9, 7, 18, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 7, 18, 20, 0),
@@ -504,7 +504,7 @@ public static class TestData
             Id = 8,
             CustomerId = 8,
             Customer = Customers[7],
-            RestaurantId = 56,
+            RestaurantId = 5,
             Restaurant = Restaurants[4],
             CreatedAt = new DateTime(2026, 9, 8, 19, 45, 0),
             DeliveredAt = new DateTime(2026, 9, 8, 19, 55, 0),
@@ -515,7 +515,7 @@ public static class TestData
             Id = 9,
             CustomerId = 9,
             Customer = Customers[8],
-            RestaurantId = 15,
+            RestaurantId = 8,
             Restaurant = Restaurants[7],
             CreatedAt = new DateTime(2026, 9, 9, 10, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 9, 10, 10, 0),
@@ -526,10 +526,65 @@ public static class TestData
             Id = 10,
             CustomerId = 10,
             Customer = Customers[9],
-            RestaurantId = 74,
+            RestaurantId = 7,
             Restaurant = Restaurants[6],
             CreatedAt = new DateTime(2026, 9, 10, 11, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 10, 11, 30, 0),
+        },
+
+        new Order
+        {
+            Id = 11,
+            CustomerId = 1,
+            Customer = Customers[0],
+            RestaurantId = 7,
+            Restaurant = Restaurants[6],
+            CreatedAt = new DateTime(2026, 9, 11, 12, 0, 0),
+            DeliveredAt = new DateTime(2026, 9, 11, 12, 25, 0),
+        },
+
+        new Order
+        {
+            Id = 12,
+            CustomerId = 3,
+            Customer = Customers[2],
+            RestaurantId = 7,
+            Restaurant = Restaurants[6],
+            CreatedAt = new DateTime(2026, 9, 12, 13, 0, 0),
+            DeliveredAt = new DateTime(2026, 9, 12, 13, 30, 0),
+        },
+
+        new Order
+        {
+            Id = 13,
+            CustomerId = 4,
+            Customer = Customers[3],
+            RestaurantId = 7,
+            Restaurant = Restaurants[6],
+            CreatedAt = new DateTime(2026, 9, 13, 14, 0, 0),
+            DeliveredAt = new DateTime(2026, 9, 13, 14, 20, 0),
+        },
+
+        new Order
+        {
+            Id = 14,
+            CustomerId = 5,
+            Customer = Customers[4],
+            RestaurantId = 2,
+            Restaurant = Restaurants[1],
+            CreatedAt = new DateTime(2026, 9, 14, 15, 0, 0),
+            DeliveredAt = new DateTime(2026, 9, 14, 15, 35, 0),
+        },
+
+        new Order
+        {
+            Id = 15,
+            CustomerId = 6,
+            Customer = Customers[5],
+            RestaurantId = 8,
+            Restaurant = Restaurants[7],
+            CreatedAt = new DateTime(2026, 9, 15, 16, 0, 0),
+            DeliveredAt = new DateTime(2026, 9, 15, 16, 40, 0),
         }
     };
 
@@ -660,6 +715,51 @@ public static class TestData
             Dish = Dishes[10],
             Quantity = 1,
         },
+
+        new OrderItem
+        {
+            Id = 15,
+            OrderId = 11,
+            DishId = 11,
+            Dish = Dishes[10],
+            Quantity = 1,
+        },
+
+        new OrderItem
+        {
+            Id = 16,
+            OrderId = 12,
+            DishId = 11,
+            Dish = Dishes[10],
+            Quantity = 2,
+        },
+
+        new OrderItem
+        {
+            Id = 17,
+            OrderId = 13,
+            DishId = 11,
+            Dish = Dishes[10],
+            Quantity = 1,
+        },
+
+        new OrderItem
+        {
+            Id = 18,
+            OrderId = 14,
+            DishId = 3,
+            Dish = Dishes[2],
+            Quantity = 1,
+        },
+
+        new OrderItem
+        {
+            Id = 19,
+            OrderId = 15,
+            DishId = 8,
+            Dish = Dishes[7],
+            Quantity = 1,
+        }
     };
 
     // связка orderitems с orders

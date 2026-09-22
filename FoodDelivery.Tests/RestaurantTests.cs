@@ -15,7 +15,7 @@ public class RestaurantTests
     {
         var orders = TestData.Orders;
 
-        var expected = new[] { 8, 17, 42, 15, 31 };
+        var expected = new[] { 7, 2, 1, 3, 8 };
 
         var restaurantIds = orders
             .CountBy(order => order.RestaurantId)
