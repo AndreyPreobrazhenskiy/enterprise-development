@@ -2,6 +2,9 @@ using FoodDelivery.Domain.Data;
 
 namespace FoodDelivery.Tests;
 
+/// <summary>
+/// Тесты для проверки аналитики по категориям блюд
+/// </summary>
 public class CategoryTests
 {
     /// <summary>

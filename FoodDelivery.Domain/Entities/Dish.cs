@@ -34,4 +34,14 @@ public class Dish
     /// Категория, к которой относится блюдо
     /// </summary>
     public required Category Category { get; set; }
+
+    /// <summary>
+    /// Идентификатор ресторана, где приготовлено блюдо
+    /// </summary>
+    public required int RestaurantId { get; set; }
+
+    /// <summary>
+    /// Ресторан, где приготовлено блюдо
+    /// </summary>
+    public required Restaurant Restaurant { get; set; }
 }

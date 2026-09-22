@@ -2,6 +2,9 @@ using FoodDelivery.Domain.Data;
 
 namespace FoodDelivery.Tests;
 
+/// <summary>
+/// Тесты для проверки аналитики по заказам
+/// </summary>
 public class OrderTests
 {
     /// <summary>
@@ -12,7 +15,7 @@ public class OrderTests
     {
         var orders = TestData.Orders;
 
-        int[] expected = [8, 9];
+        var expected = new[] { 8, 9 };
 
         var minimumDeliveryTime = orders
             .Select(order => order.DeliveredAt - order.CreatedAt)

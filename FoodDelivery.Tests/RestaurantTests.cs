@@ -2,6 +2,9 @@ using FoodDelivery.Domain.Data;
 
 namespace FoodDelivery.Tests;
 
+/// <summary>
+/// Тесты для проверки аналитики по ресторанам
+/// </summary>
 public class RestaurantTests
 {
     /// <summary>
@@ -12,7 +15,7 @@ public class RestaurantTests
     {
         var orders = TestData.Orders;
 
-        int[] expected = [ 1, 2, 3, 4, 5 ];
+        var expected = new[] { 8, 17, 42, 15, 31 };
 
         var restaurantIds = orders
             .CountBy(order => order.RestaurantId)

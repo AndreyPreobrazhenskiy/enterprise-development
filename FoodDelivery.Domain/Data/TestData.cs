@@ -71,7 +71,7 @@ public static class TestData
     {
         new Restaurant
         {
-            Id = 1,
+            Id = 17,
             Name = "Додо Пицца",
             Address = "просп. Ленина, 1",
             Rating = 4.8,
@@ -81,7 +81,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 2,
+            Id = 42,
             Name = "Burger King",
             Address = "ул. Тухачевского, 80",
             Rating = 4.6,
@@ -91,7 +91,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 3,
+            Id = 8,
             Name = "Tanuki",
             Address = "ул. Коммунистическая, 17",
             Rating = 4.9,
@@ -101,7 +101,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 4,
+            Id = 31,
             Name = "Salad Bar",
             Address = "ул. Гагарина, 66",
             Rating = 4.3,
@@ -111,7 +111,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 5,
+            Id = 56,
             Name = "Мушмула",
             Address = "ул. Галактионовская, 133",
             Rating = 4.6,
@@ -121,7 +121,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 6,
+            Id = 23,
             Name = "Дари Дури",
             Address = "ул. Дачная, 12",
             Rating = 4.4,
@@ -131,7 +131,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 7,
+            Id = 74,
             Name = "Surf Coffee",
             Address = "ул. Полевая, 28",
             Rating = 4.8,
@@ -141,7 +141,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 8,
+            Id = 15,
             Name = "Чипа Лучо",
             Address = "ул. Ново-Садовая, 228",
             Rating = 4.2,
@@ -151,7 +151,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 9,
+            Id = 63,
             Name = "Белотурка",
             Address = "ул. Молодогвардейская,127",
             Rating = 4.8,
@@ -161,7 +161,7 @@ public static class TestData
 
         new Restaurant
         {
-            Id = 10,
+            Id = 91,
             Name = "Gellert",
             Address = "ул. Владимирская, 38",
             Rating = 4.0,
@@ -282,7 +282,9 @@ public static class TestData
             WeightGrams = 500,
             Price = 750m,
             CategoryId = 1,
-            Category = Categories[0]
+            Category = Categories[0],
+            RestaurantId = 17,
+            Restaurant = Restaurants[0]
         },
 
         new Dish
@@ -292,7 +294,9 @@ public static class TestData
             WeightGrams = 550,
             Price = 650m,
             CategoryId = 1,
-            Category = Categories[0]
+            Category = Categories[0],
+            RestaurantId = 17,
+            Restaurant = Restaurants[0]
         },
 
         new Dish
@@ -302,7 +306,9 @@ public static class TestData
             WeightGrams = 300,
             Price = 650m,
             CategoryId = 2,
-            Category = Categories[1]
+            Category = Categories[1],
+            RestaurantId = 42,
+            Restaurant = Restaurants[1]
         },
 
         new Dish
@@ -312,7 +318,9 @@ public static class TestData
             WeightGrams = 320,
             Price = 500m,
             CategoryId = 2,
-            Category = Categories[1]
+            Category = Categories[1],
+            RestaurantId = 42,
+            Restaurant = Restaurants[1]
         },
 
         new Dish
@@ -322,7 +330,9 @@ public static class TestData
             WeightGrams = 150,
             Price = 220m,
             CategoryId = 3,
-            Category = Categories[2]
+            Category = Categories[2],
+            RestaurantId = 42,
+            Restaurant = Restaurants[1]
         },
 
         new Dish
@@ -332,7 +342,9 @@ public static class TestData
             WeightGrams = 280,
             Price = 420m,
             CategoryId = 4,
-            Category = Categories[3]
+            Category = Categories[3],
+            RestaurantId = 31,
+            Restaurant = Restaurants[3]
         },
 
         new Dish
@@ -342,7 +354,9 @@ public static class TestData
             WeightGrams = 350,
             Price = 380m,
             CategoryId = 5,
-            Category = Categories[4]
+            Category = Categories[4],
+            RestaurantId = 56,
+            Restaurant = Restaurants[4]
         },
 
         new Dish
@@ -352,7 +366,9 @@ public static class TestData
             WeightGrams = 400,
             Price = 590m,
             CategoryId = 6,
-            Category = Categories[5]
+            Category = Categories[5],
+            RestaurantId = 15,
+            Restaurant = Restaurants[7]
         },
 
         new Dish
@@ -362,7 +378,9 @@ public static class TestData
             WeightGrams = 250,
             Price = 680m,
             CategoryId = 7,
-            Category = Categories[6]
+            Category = Categories[6],
+            RestaurantId = 8,
+            Restaurant = Restaurants[2]
         },
 
         new Dish
@@ -372,7 +390,9 @@ public static class TestData
             WeightGrams = 180,
             Price = 300m,
             CategoryId = 8,
-            Category = Categories[7]
+            Category = Categories[7],
+            RestaurantId = 63,
+            Restaurant = Restaurants[8]
         },
 
         new Dish
@@ -382,7 +402,9 @@ public static class TestData
             WeightGrams = 300,
             Price = 450m,
             CategoryId = 9,
-            Category = Categories[8]
+            Category = Categories[8],
+            RestaurantId = 74,
+            Restaurant = Restaurants[6]
         },
 
         new Dish
@@ -392,7 +414,9 @@ public static class TestData
             WeightGrams = 250,
             Price = 350m,
             CategoryId = 10,
-            Category = Categories[9]
+            Category = Categories[9],
+            RestaurantId = 63,
+            Restaurant = Restaurants[8]
         }
     };
 
@@ -401,9 +425,9 @@ public static class TestData
         new Order
         {
             Id = 1,
-            CustomerId = 1,
+            CustomerId = 17,
             Customer = Customers[0],
-            RestaurantId = 1,
+            RestaurantId = 17,
             Restaurant = Restaurants[0],
             CreatedAt = new DateTime(2026, 9, 1, 12, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 1, 12, 35, 0),
@@ -414,7 +438,7 @@ public static class TestData
             Id = 2,
             CustomerId = 2,
             Customer = Customers[1],
-            RestaurantId = 1,
+            RestaurantId = 17,
             Restaurant = Restaurants[0],
             CreatedAt = new DateTime(2026, 9, 2, 13, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 2, 13, 50, 0),
@@ -425,7 +449,7 @@ public static class TestData
             Id = 3,
             CustomerId = 3,
             Customer = Customers[2],
-            RestaurantId = 2,
+            RestaurantId = 42,
             Restaurant = Restaurants[1],
             CreatedAt = new DateTime(2026, 9, 3, 14, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 3, 14, 25, 0),
@@ -436,7 +460,7 @@ public static class TestData
             Id = 4,
             CustomerId = 4,
             Customer = Customers[3],
-            RestaurantId = 2,
+            RestaurantId = 42,
             Restaurant = Restaurants[1],
             CreatedAt = new DateTime(2026, 9, 4, 15, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 4, 15, 45, 0),
@@ -447,7 +471,7 @@ public static class TestData
             Id = 5,
             CustomerId = 5,
             Customer = Customers[4],
-            RestaurantId = 3,
+            RestaurantId = 8,
             Restaurant = Restaurants[2],
             CreatedAt = new DateTime(2026, 9, 5, 16, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 5, 16, 30, 0),
@@ -458,7 +482,7 @@ public static class TestData
             Id = 6,
             CustomerId = 6,
             Customer = Customers[5],
-            RestaurantId = 3,
+            RestaurantId = 8,
             Restaurant = Restaurants[2],
             CreatedAt = new DateTime(2026, 9, 6, 17, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 6, 17, 40, 0),
@@ -469,7 +493,7 @@ public static class TestData
             Id = 7,
             CustomerId = 7,
             Customer = Customers[6],
-            RestaurantId = 4,
+            RestaurantId = 31,
             Restaurant = Restaurants[3],
             CreatedAt = new DateTime(2026, 9, 7, 18, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 7, 18, 20, 0),
@@ -480,7 +504,7 @@ public static class TestData
             Id = 8,
             CustomerId = 8,
             Customer = Customers[7],
-            RestaurantId = 5,
+            RestaurantId = 56,
             Restaurant = Restaurants[4],
             CreatedAt = new DateTime(2026, 9, 8, 19, 45, 0),
             DeliveredAt = new DateTime(2026, 9, 8, 19, 55, 0),
@@ -491,8 +515,8 @@ public static class TestData
             Id = 9,
             CustomerId = 9,
             Customer = Customers[8],
-            RestaurantId = 6,
-            Restaurant = Restaurants[5],
+            RestaurantId = 15,
+            Restaurant = Restaurants[7],
             CreatedAt = new DateTime(2026, 9, 9, 10, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 9, 10, 10, 0),
         },
@@ -502,8 +526,8 @@ public static class TestData
             Id = 10,
             CustomerId = 10,
             Customer = Customers[9],
-            RestaurantId = 1,
-            Restaurant = Restaurants[0],
+            RestaurantId = 74,
+            Restaurant = Restaurants[6],
             CreatedAt = new DateTime(2026, 9, 10, 11, 0, 0),
             DeliveredAt = new DateTime(2026, 9, 10, 11, 30, 0),
         }
@@ -587,15 +611,15 @@ public static class TestData
         {
             Id = 9,
             OrderId = 5,
-            DishId = 6,
-            Dish = Dishes[5],
+            DishId = 9,
+            Dish = Dishes[8],
             Quantity = 1,
         },
 
         new OrderItem
         {
             Id = 10,
-            OrderId = 5,
+            OrderId = 6,
             DishId = 9,
             Dish = Dishes[8],
             Quantity = 1,
@@ -604,25 +628,16 @@ public static class TestData
         new OrderItem
         {
             Id = 11,
-            OrderId = 6,
-            DishId = 9,
-            Dish = Dishes[8],
+            OrderId = 7,
+            DishId = 6,
+            Dish = Dishes[5],
             Quantity = 1,
         },
 
         new OrderItem
         {
             Id = 12,
-            OrderId = 6,
-            DishId = 10,
-            Dish = Dishes[9],
-            Quantity = 1,
-        },
-
-        new OrderItem
-        {
-            Id = 13,
-            OrderId = 7,
+            OrderId = 8,
             DishId = 7,
             Dish = Dishes[6],
             Quantity = 1,
@@ -630,34 +645,7 @@ public static class TestData
 
         new OrderItem
         {
-            Id = 14,
-            OrderId = 7,
-            DishId = 8,
-            Dish = Dishes[7],
-            Quantity = 1,
-        },
-
-        new OrderItem
-        {
-            Id = 15,
-            OrderId = 8,
-            DishId = 3,
-            Dish = Dishes[2],
-            Quantity = 1,
-        },
-
-        new OrderItem
-        {
-            Id = 16,
-            OrderId = 8,
-            DishId = 4,
-            Dish = Dishes[3],
-            Quantity = 1,
-        },
-
-        new OrderItem
-        {
-            Id = 17,
+            Id = 13,
             OrderId = 9,
             DishId = 8,
             Dish = Dishes[7],
@@ -666,26 +654,24 @@ public static class TestData
 
         new OrderItem
         {
-            Id = 18,
+            Id = 14,
             OrderId = 10,
-            DishId = 1,
-            Dish = Dishes[0],
+            DishId = 11,
+            Dish = Dishes[10],
             Quantity = 1,
         },
-
-        new OrderItem
-        {
-            Id = 19,
-            OrderId = 10,
-            DishId = 5,
-            Dish = Dishes[4],
-            Quantity = 1,
-        }
     };
 
     // связка orderitems с orders
     static TestData()
     {
+        foreach (var restaurant in Restaurants)
+        {
+            restaurant.Dishes = Dishes
+                .Where(dish => dish.RestaurantId == restaurant.Id)
+                .ToList();
+        }
+
         foreach (var order in Orders)
         {
             order.Items = OrderItems

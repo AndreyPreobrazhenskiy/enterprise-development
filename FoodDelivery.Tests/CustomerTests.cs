@@ -2,6 +2,9 @@ using FoodDelivery.Domain.Data;
 
 namespace FoodDelivery.Tests;
 
+/// <summary>
+/// Тесты для проверки аналитики по клиентам
+/// </summary>
 public class CustomerTests
 {
     /// <summary>
@@ -10,9 +13,9 @@ public class CustomerTests
     [Fact]
     public void CustomersWhoOrderedFromSelectedRestaurant()
     {
-        var selectedRestaurantId = 1;
+        var selectedRestaurantId = 17;
 
-        int[] expected = [2, 1, 10];
+        var expected = new[] { 2, 1 };
 
         var customers = TestData.Orders
             .Where(order => order.RestaurantId == selectedRestaurantId)

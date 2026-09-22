@@ -34,4 +34,9 @@ public class Restaurant
     /// Время закрытия ресторана
     /// </summary>
     public required TimeOnly ClosingTime { get; set; }
+
+    /// <summary>
+    /// Список блюд ресторана
+    /// </summary>
+    public List<Dish> Dishes { get; set; } = [];
 }
