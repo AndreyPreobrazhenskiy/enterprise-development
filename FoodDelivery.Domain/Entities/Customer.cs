@@ -3,7 +3,7 @@ namespace FoodDelivery.Domain.Entities;
 /// <summary>
 /// Клиент
 /// </summary>
-public class Customer
+public class Customer : IEntity
 {
     /// <summary>
     /// Уникальный идентификатор клиента

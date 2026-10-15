@@ -3,7 +3,7 @@ namespace FoodDelivery.Domain.Entities;
 /// <summary>
 /// Категория блюда
 /// </summary>
-public class Category
+public class Category : IEntity
 {
     /// <summary>
     /// Уникальный идентификатор категории

@@ -3,7 +3,7 @@ namespace FoodDelivery.Domain.Entities;
 /// <summary>
 /// Отдельная позиция в заказе
 /// </summary>
-public class OrderItem
+public class OrderItem : IEntity
 {
     /// <summary>
     /// Уникальный идентификатор позиции заказа

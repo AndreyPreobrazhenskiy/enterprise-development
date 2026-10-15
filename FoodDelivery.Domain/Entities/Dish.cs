@@ -3,7 +3,7 @@ namespace FoodDelivery.Domain.Entities;
 /// <summary>
 /// Блюдо из ресторана
 /// </summary>
-public class Dish
+public class Dish : IEntity
 {
     /// <summary>
     /// Уникальный идентификатор блюда

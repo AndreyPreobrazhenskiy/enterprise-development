@@ -3,7 +3,7 @@ namespace FoodDelivery.Domain.Entities;
 /// <summary>
 /// Ресторан, из которого можно заказывать
 /// </summary>
-public class Restaurant
+public class Restaurant : IEntity
 {
     /// <summary>
     /// Уникальный идентификатор ресторана

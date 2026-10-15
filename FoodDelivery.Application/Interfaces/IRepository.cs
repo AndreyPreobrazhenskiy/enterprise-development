@@ -4,7 +4,7 @@
 /// Определяет базовые операции доступа к данным
 /// </summary>
 public interface IRepository<T>
-    where T : class
+    where T : FoodDelivery.Domain.Entities.IEntity
 {
     /// <summary>
     /// Возвращает список всех сущностей
