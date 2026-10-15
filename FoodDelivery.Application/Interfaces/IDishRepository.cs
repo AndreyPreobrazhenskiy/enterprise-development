@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Application.Interfaces;
 
-internal interface IDishRepository
+/// <summary>
+/// Определяет операции доступа к данным блюд
+/// </summary>
+public interface IDishRepository : IRepository<Dish>
 {
 }

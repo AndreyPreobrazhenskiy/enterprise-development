@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Application.Interfaces;
 
-internal interface IRestaurantRepository
+/// <summary>
+/// Определяет операции доступа к данным ресторанов
+/// </summary>
+public interface IRestaurantRepository : IRepository<Restaurant>
 {
 }

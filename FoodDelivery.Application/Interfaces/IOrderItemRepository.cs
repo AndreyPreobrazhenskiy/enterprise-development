@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Application.Interfaces;
 
-internal interface IOrderItemRepository
+/// <summary>
+/// Определяет операции доступа к позициям заказов
+/// </summary>
+public interface IOrderItemRepository : IRepository<OrderItem>
 {
 }

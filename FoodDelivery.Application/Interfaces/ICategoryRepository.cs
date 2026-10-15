@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Application.Interfaces;
 
-internal interface ICategoryRepository
+/// <summary>
+/// Определяет операции доступа к данным категорий
+/// </summary>
+public interface ICategoryRepository : IRepository<Category>
 {
 }
