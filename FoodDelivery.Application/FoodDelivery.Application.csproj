@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FoodDelivery.Application.Contracts\FoodDelivery.Application.Contracts.csproj" />
+    <ProjectReference Include="..\FoodDelivery.Domain\FoodDelivery.Domain.csproj" />
   </ItemGroup>
 
 </Project>
