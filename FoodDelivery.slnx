@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="FoodDelivery.Application/FoodDelivery.Application.csproj" Id="7de2ebe2-57ff-4c40-aaed-b7a357f18690" />
   <Project Path="FoodDelivery.Domain/FoodDelivery.Domain.csproj" />
   <Project Path="FoodDelivery.Tests/FoodDelivery.Tests.csproj" />
 </Solution>
