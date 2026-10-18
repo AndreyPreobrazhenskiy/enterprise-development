@@ -5,18 +5,28 @@
 /// </summary>
 public interface IApplicationService<TDto, TCreateUpdateDto, TKey>
 {
-    /// <summary>Создаёт новую запись</summary>
-    Task<TDto> Create(TCreateUpdateDto dto);
+    /// <summary>
+    /// Создаёт новую запись
+    /// </summary>
+    TDto Create(TCreateUpdateDto dto);
 
-    /// <summary>Возвращает запись по идентификатору</summary>
-    Task<TDto?> Get(TKey id);
+    /// <summary>
+    /// Возвращает запись по идентификатору
+    /// </summary>
+    TDto? Get(TKey id);
 
-    /// <summary>Возвращает все записи</summary>
-    Task<IList<TDto>> GetAll();
+    /// <summary>
+    /// Возвращает все записи
+    /// </summary>
+    IList<TDto> GetAll();
 
-    /// <summary>Обновляет существующую запись</summary>
-    Task<TDto> Update(TCreateUpdateDto dto, TKey id);
+    /// <summary>
+    /// Обновляет существующую запись
+    /// </summary>
+    TDto Update(TCreateUpdateDto dto, TKey id);
 
-    /// <summary>Удаляет запись</summary>
-    Task<bool> Delete(TKey id);
+    /// <summary>
+    /// Удаляет запись
+    /// </summary>
+    bool Delete(TKey id);
 }
