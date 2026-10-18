@@ -35,13 +35,19 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
             .GroupBy(item => item.CategoryId)
             .Select(group =>
             {
+                var category = categories.FirstOrDefault(item => item.Id == group.Key);
+
+                if (category is null)
+                {
+                    throw new InvalidOperationException($"Категория с ID {group.Key} не найдена");
+                }
+
                 var categoryOrders = group
-                    .DistinctBy(item => item.Order.Id)
                     .Select(item => item.Order)
+                    .DistinctBy(order => order.Id)
                     .ToList();
 
-                var category = categories.First(
-                    item => item.Id == group.Key);
+                if (categoryOrders.Count == 0) return null;
 
                 return new CategoryOrderSummaryDto(
                     category.Id,
@@ -50,6 +56,8 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
                     categoryOrders.Average(order => order.TotalAmount),
                     categoryOrders.Sum(order => order.TotalAmount));
             })
+            .Where(item => item is not null)
+            .Select(item => item!)
             .OrderBy(item => item.CategoryId)
             .ToList();
     }
@@ -131,10 +139,18 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
 
         return orderRepository.GetAll()
             .GroupBy(order => order.RestaurantId)
-            .Select(group => new RestaurantOrderCountDto(
-                group.Key,
-                group.First().Restaurant.Name,
-                group.Count()))
+            .Select(group =>
+            {
+                var restaurant = group
+                    .Select(order => order.Restaurant)
+                    .FirstOrDefault(restaurant => restaurant is not null);
+
+                if (restaurant is null) return null;
+
+                return new RestaurantOrderCountDto(group.Key, restaurant.Name, group.Count());
+            })
+            .Where(item => item is not null)
+            .Select(item => item!)
             .OrderByDescending(restaurant => restaurant.OrderCount)
             .ThenBy(restaurant => restaurant.RestaurantId)
             .Take(count)
