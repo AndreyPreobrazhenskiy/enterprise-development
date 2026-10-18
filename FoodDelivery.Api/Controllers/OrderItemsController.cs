@@ -31,12 +31,7 @@ public class OrderItemsController(IOrderItemService orderItemService, ILogger<Or
     public ActionResult<OrderItemDto> GetById(int id)
     {
         var orderItem = orderItemService.Get(id);
-
-        if (orderItem is null)
-        {
-            return NotFound();
-        }
-
+        if (orderItem is null) return NotFound();
         return Ok(orderItem);
     }
 

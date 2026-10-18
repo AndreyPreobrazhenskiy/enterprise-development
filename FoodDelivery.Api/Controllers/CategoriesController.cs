@@ -33,12 +33,7 @@ public class CategoriesController(
     public ActionResult<CategoryDto> GetById(int id)
     {
         var category = categoryService.Get(id);
-
-        if (category is null)
-        {
-            return NotFound();
-        }
-
+        if (category is null) return NotFound();
         return Ok(category);
     }
 
@@ -52,14 +47,9 @@ public class CategoriesController(
     {
         var category = categoryService.Create(dto);
 
-        logger.LogInformation(
-            "Создана категория с идентификатором {CategoryId}",
-            category.Id);
+        logger.LogInformation("Создана категория с идентификатором {CategoryId}", category.Id);
 
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = category.Id },
-            category);
+        return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
     }
 
     /// <summary>

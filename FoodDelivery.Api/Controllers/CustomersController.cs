@@ -33,12 +33,7 @@ public class CustomersController(
     public ActionResult<CustomerDto> GetById(int id)
     {
         var customer = customerService.Get(id);
-
-        if (customer is null)
-        {
-            return NotFound();
-        }
-
+        if (customer is null) return NotFound();
         return Ok(customer);
     }
 

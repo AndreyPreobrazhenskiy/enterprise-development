@@ -31,12 +31,7 @@ public class DishesController(IDishService dishService, ILogger<DishesController
     public ActionResult<DishDto> GetById(int id)
     {
         var dish = dishService.Get(id);
-
-        if (dish is null)
-        {
-            return NotFound();
-        }
-
+        if (dish is null) return NotFound();
         return Ok(dish);
     }
 

@@ -32,12 +32,7 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     public ActionResult<RestaurantDto> GetById(int id)
     {
         var restaurant = restaurantService.Get(id);
-
-        if (restaurant is null)
-        {
-            return NotFound();
-        }
-
+        if (restaurant is null) return NotFound();
         return Ok(restaurant);
     }
 
