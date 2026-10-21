@@ -7,9 +7,7 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// <summary>
 /// Реализует репозиторий заказов
 /// </summary>
-public class OrderRepository()
-    : InMemoryRepository<Order>(TestData.Orders),
-      IOrderRepository
+public class OrderRepository() : InMemoryRepository<Order>(TestData.Orders), IOrderRepository
 {
     /// <inheritdoc />
     public override Order? Update(Order order)
@@ -29,5 +27,29 @@ public class OrderRepository()
         existingOrder.DeliveredAt = order.DeliveredAt;
 
         return existingOrder;
+    }
+
+    /// <inheritdoc />
+    public override bool Delete(int id)
+    {
+        var order = GetById(id);
+
+        if (order is null)
+        {
+            return false;
+        }
+
+        var relatedItems = TestData.OrderItems
+            .Where(item => item.OrderId == id)
+            .ToList();
+
+        foreach (var item in relatedItems)
+        {
+            TestData.OrderItems.Remove(item);
+        }
+
+        order.Items.Clear();
+
+        return base.Delete(id);
     }
 }

@@ -47,8 +47,6 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
                     .DistinctBy(order => order.Id)
                     .ToList();
 
-                if (categoryOrders.Count == 0) return null;
-
                 return new CategoryOrderSummaryDto(
                     category.Id,
                     category.Name,
@@ -56,8 +54,7 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
                     categoryOrders.Average(order => order.TotalAmount),
                     categoryOrders.Sum(order => order.TotalAmount));
             })
-            .Where(item => item is not null)
-            .Select(item => item!)
+
             .OrderBy(item => item.CategoryId)
             .ToList();
     }
@@ -141,16 +138,10 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
             .GroupBy(order => order.RestaurantId)
             .Select(group =>
             {
-                var restaurant = group
-                    .Select(order => order.Restaurant)
-                    .FirstOrDefault(restaurant => restaurant is not null);
-
-                if (restaurant is null) return null;
+                var restaurant = group.First().Restaurant;
 
                 return new RestaurantOrderCountDto(group.Key, restaurant.Name, group.Count());
             })
-            .Where(item => item is not null)
-            .Select(item => item!)
             .OrderByDescending(restaurant => restaurant.OrderCount)
             .ThenBy(restaurant => restaurant.RestaurantId)
             .Take(count)

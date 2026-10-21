@@ -1,4 +1,5 @@
-﻿using FoodDelivery.Domain.Data;
+﻿using FoodDelivery.Application.Interfaces;
+using FoodDelivery.Domain.Data;
 using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Infrastructure.InMemory.Repositories;
@@ -8,7 +9,7 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// </summary>
 public class CategoryRepository()
     : InMemoryRepository<Category>(TestData.Categories),
-      FoodDelivery.Application.Interfaces.ICategoryRepository
+      ICategoryRepository
 {
     /// <inheritdoc />
     public override Category? Update(Category category)

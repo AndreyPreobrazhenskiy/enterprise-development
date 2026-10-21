@@ -9,19 +9,26 @@ namespace FoodDelivery.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/customers")]
-public class CustomersController(
-    ICustomerService customerService,
-    ILogger<CustomersController> logger) : ControllerBase
+public class CustomersController(ICustomerService customerService, ILogger<CustomersController> logger) : ControllerBase
 {
     /// <summary>
     /// Возвращает всех покупателей
     /// </summary>
     [HttpGet]
     [ProducesResponseType(typeof(IList<CustomerDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<IList<CustomerDto>> GetAll()
     {
-        logger.LogInformation("Получен запрос на получение всех покупателей");
-        return Ok(customerService.GetAll());
+        try
+        {
+            logger.LogInformation("Получен запрос на получение всех покупателей");
+            return Ok(customerService.GetAll());
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при получении списка покупателей");
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -30,11 +37,25 @@ public class CustomersController(
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(CustomerDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<CustomerDto> GetById(int id)
     {
-        var customer = customerService.Get(id);
-        if (customer is null) return NotFound();
-        return Ok(customer);
+        try
+        {
+            var customer = customerService.Get(id);
+
+            if (customer is null)
+            {
+                return NotFound(new { message = "Покупатель не найден" });
+            }
+
+            return Ok(customer);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при получении покупателя {CustomerId}", id);
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -43,11 +64,25 @@ public class CustomersController(
     [HttpPost]
     [ProducesResponseType(typeof(CustomerDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<CustomerDto> Create(CustomerCreateUpdateDto dto)
     {
-        var customer = customerService.Create(dto);
-        logger.LogInformation("Создан покупатель с идентификатором {CustomerId}", customer.Id);
-        return CreatedAtAction(nameof(GetById), new { id = customer.Id }, customer);
+        try
+        {
+            var customer = customerService.Create(dto);
+            logger.LogInformation("Создан покупатель {CustomerId}", customer.Id);
+            return CreatedAtAction(nameof(GetById), new { id = customer.Id }, customer);
+        }
+        catch (ArgumentException exception)
+        {
+            logger.LogWarning(exception, "Некорректные данные при создании покупателя");
+            return BadRequest(new { message = "Переданы некорректные данные" });
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при создании покупателя");
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -55,17 +90,34 @@ public class CustomersController(
     /// </summary>
     [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(CustomerDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<CustomerDto> Update(int id, CustomerCreateUpdateDto dto)
     {
         try
         {
+            if (customerService.Get(id) is null)
+            {
+                return NotFound(new { message = "Покупатель не найден" });
+            }
+
             return Ok(customerService.Update(dto, id));
         }
         catch (KeyNotFoundException exception)
         {
-            logger.LogWarning(exception, "Покупатель с идентификатором {CustomerId} не найден", id);
-            return NotFound();
+            logger.LogWarning(exception, "Не найдена связанная сущность при обновлении покупателя {CustomerId}", id);
+            return BadRequest(new { message = "Невозможно обновить покупателя из-за отсутствующей связанной сущности" });
+        }
+        catch (ArgumentException exception)
+        {
+            logger.LogWarning(exception, "Некорректные данные при обновлении покупателя {CustomerId}", id);
+            return BadRequest(new { message = "Переданы некорректные данные" });
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при обновлении покупателя {CustomerId}", id);
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -74,15 +126,24 @@ public class CustomersController(
     /// </summary>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int id)
     {
-        var deleted = customerService.Delete(id);
-
-        if (deleted)
+        try
         {
-            logger.LogInformation("Удалён покупатель с идентификатором {CustomerId}", id);
-        }
+            var deleted = customerService.Delete(id);
 
-        return NoContent();
+            if (deleted)
+            {
+                logger.LogInformation("Удалён покупатель {CustomerId}", id);
+            }
+
+            return NoContent();
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при удалении покупателя {CustomerId}", id);
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 }

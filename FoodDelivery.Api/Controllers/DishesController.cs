@@ -16,10 +16,22 @@ public class DishesController(IDishService dishService, ILogger<DishesController
     /// </summary>
     [HttpGet]
     [ProducesResponseType(typeof(IList<DishDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<IList<DishDto>> GetAll()
     {
-        logger.LogInformation("Получен запрос на получение всех блюд");
-        return Ok(dishService.GetAll());
+        try
+        {
+            logger.LogInformation("Получен запрос на получение всех блюд");
+            return Ok(dishService.GetAll());
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при получении списка блюд");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -28,11 +40,31 @@ public class DishesController(IDishService dishService, ILogger<DishesController
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(DishDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<DishDto> GetById(int id)
     {
-        var dish = dishService.Get(id);
-        if (dish is null) return NotFound();
-        return Ok(dish);
+        try
+        {
+            var dish = dishService.Get(id);
+
+            if (dish is null)
+            {
+                return NotFound(new { message = "Блюдо не найдено" });
+            }
+
+            return Ok(dish);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(
+                exception,
+                "Ошибка при получении блюда с идентификатором {DishId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -41,11 +73,45 @@ public class DishesController(IDishService dishService, ILogger<DishesController
     [HttpPost]
     [ProducesResponseType(typeof(DishDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<DishDto> Create(DishCreateUpdateDto dto)
     {
-        var dish = dishService.Create(dto);
-        logger.LogInformation("Создано блюдо с идентификатором {DishId}.", dish.Id);
-        return CreatedAtAction(nameof(GetById), new { id = dish.Id }, dish);
+        try
+        {
+            var dish = dishService.Create(dto);
+            logger.LogInformation("Создано блюдо с идентификатором {DishId}", dish.Id);
+            return CreatedAtAction(nameof(GetById), new { id = dish.Id }, dish);
+        }
+        catch (KeyNotFoundException exception)
+        {
+            logger.LogWarning(
+                exception,
+                "Не найдена связанная сущность при создании блюда");
+
+            return BadRequest(new
+            {
+                message = "Указанная категория или ресторан не найдены"
+            });
+        }
+        catch (ArgumentException exception)
+        {
+            logger.LogWarning(
+                exception,
+                "Переданы некорректные данные при создании блюда");
+
+            return BadRequest(new
+            {
+                message = "Переданы некорректные данные"
+            });
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при создании блюда");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -53,17 +119,49 @@ public class DishesController(IDishService dishService, ILogger<DishesController
     /// </summary>
     [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(DishDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<DishDto> Update(int id, DishCreateUpdateDto dto)
     {
         try
         {
-            return Ok(dishService.Update(dto, id));
+            var existingDish = dishService.Get(id);
+
+            if (existingDish is null)
+            {
+                return NotFound(new { message = "Блюдо не найдено" });
+            }
+
+            var updatedDish = dishService.Update(dto, id);
+            logger.LogInformation("Обновлено блюдо с идентификатором {DishId}", id);
+            return Ok(updatedDish);
         }
         catch (KeyNotFoundException exception)
         {
-            logger.LogWarning(exception, "Блюдо {DishId} не найдено", id);
-            return NotFound();
+            logger.LogWarning(exception, "Не найдена связанная сущность при обновлении блюда {DishId}", id);
+
+            return BadRequest(new
+            {
+                message = "Указанная категория или ресторан не найдены"
+            });
+        }
+        catch (ArgumentException exception)
+        {
+            logger.LogWarning(exception, "Переданы некорректные данные при обновлении блюда {DishId}", id);
+
+            return BadRequest(new
+            {
+                message = "Переданы некорректные данные"
+            });
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при обновлении блюда {DishId}", id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -72,15 +170,27 @@ public class DishesController(IDishService dishService, ILogger<DishesController
     /// </summary>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int id)
     {
-        var deleted = dishService.Delete(id);
-
-        if (deleted)
+        try
         {
-            logger.LogInformation("Удалено блюдо {DishId}", id);
-        }
+            var deleted = dishService.Delete(id);
 
-        return NoContent();
+            if (deleted)
+            {
+                logger.LogInformation("Удалено блюдо с идентификатором {DishId}", id);
+            }
+
+            return NoContent();
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при удалении блюда {DishId}", id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
+        }
     }
 }

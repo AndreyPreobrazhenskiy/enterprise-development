@@ -38,7 +38,7 @@ public abstract class InMemoryRepository<T>(
     public abstract T? Update(T entity);
 
     /// <inheritdoc />
-    public bool Delete(int id)
+    public virtual bool Delete(int id)
     {
         var entity = GetById(id);
 

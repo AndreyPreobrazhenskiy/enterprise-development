@@ -1,5 +1,4 @@
-﻿
-using FoodDelivery.Application.Contracts.DTOs;
+﻿using FoodDelivery.Application.Contracts.DTOs;
 using FoodDelivery.Application.Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +16,19 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     /// </summary>
     [HttpGet]
     [ProducesResponseType(typeof(IList<RestaurantDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<IList<RestaurantDto>> GetAll()
     {
-        logger.LogInformation("Получен запрос на получение всех ресторанов");
-        return Ok(restaurantService.GetAll());
+        try
+        {
+            logger.LogInformation("Получен запрос на получение всех ресторанов");
+            return Ok(restaurantService.GetAll());
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при получении списка ресторанов");
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -29,11 +37,25 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(RestaurantDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<RestaurantDto> GetById(int id)
     {
-        var restaurant = restaurantService.Get(id);
-        if (restaurant is null) return NotFound();
-        return Ok(restaurant);
+        try
+        {
+            var restaurant = restaurantService.Get(id);
+
+            if (restaurant is null)
+            {
+                return NotFound(new { message = "Ресторан не найден" });
+            }
+
+            return Ok(restaurant);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при получении ресторана {RestaurantId}", id);
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -42,11 +64,25 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     [HttpPost]
     [ProducesResponseType(typeof(RestaurantDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<RestaurantDto> Create(RestaurantCreateUpdateDto dto)
     {
-        var restaurant = restaurantService.Create(dto);
-        logger.LogInformation("Создан ресторан с идентификатором {RestaurantId}", restaurant.Id);
-        return CreatedAtAction(nameof(GetById), new { id = restaurant.Id }, restaurant);
+        try
+        {
+            var restaurant = restaurantService.Create(dto);
+            logger.LogInformation("Создан ресторан {RestaurantId}", restaurant.Id);
+            return CreatedAtAction(nameof(GetById), new { id = restaurant.Id }, restaurant);
+        }
+        catch (ArgumentException exception)
+        {
+            logger.LogWarning(exception, "Некорректные данные при создании ресторана");
+            return BadRequest(new { message = "Переданы некорректные данные" });
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при создании ресторана");
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 
     /// <summary>
@@ -54,18 +90,34 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     /// </summary>
     [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(RestaurantDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<RestaurantDto> Update(int id, RestaurantCreateUpdateDto dto)
     {
         try
         {
+            if (restaurantService.Get(id) is null)
+            {
+                return NotFound(new { message = "Ресторан не найден" });
+            }
+
             return Ok(restaurantService.Update(dto, id));
         }
         catch (KeyNotFoundException exception)
         {
-            logger.LogWarning(exception, "Ресторан с идентификатором {RestaurantId} не найден", id);
-
-            return NotFound();
+            logger.LogWarning(exception, "Не найдена связанная сущность при обновлении ресторана {RestaurantId}", id);
+            return BadRequest(new { message = "Невозможно обновить ресторан из-за отсутствующей связанной сущности" });
+        }
+        catch (ArgumentException exception)
+        {
+            logger.LogWarning(exception, "Некорректные данные при обновлении ресторана {RestaurantId}", id);
+            return BadRequest(new { message = "Переданы некорректные данные" });
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при обновлении ресторана {RestaurantId}", id);
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -74,15 +126,24 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     /// </summary>
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Delete(int id)
     {
-        var deleted = restaurantService.Delete(id);
-
-        if (deleted)
+        try
         {
-            logger.LogInformation("Удалён ресторан с идентификатором {RestaurantId}", id);
-        }
+            var deleted = restaurantService.Delete(id);
 
-        return NoContent();
+            if (deleted)
+            {
+                logger.LogInformation("Удалён ресторан {RestaurantId}", id);
+            }
+
+            return NoContent();
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при удалении ресторана {RestaurantId}", id);
+            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+        }
     }
 }
