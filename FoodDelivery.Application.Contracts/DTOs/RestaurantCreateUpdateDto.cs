@@ -13,7 +13,7 @@ namespace FoodDelivery.Application.Contracts.DTOs;
 public record RestaurantCreateUpdateDto(
     [property: Required(ErrorMessage = "Название ресторана обязательно")]
     [property: StringLength(100, ErrorMessage = "Название ресторана не должно превышать 100 символов")]
-    [property: RegularExpression(@".\S.", ErrorMessage = "Название ресторана не должно состоять только из пробелов")]
+    [property: RegularExpression(@".*\S.*", ErrorMessage = "Название ресторана не должно состоять только из пробелов")]
     string Name,
 
     [property: Required(ErrorMessage = "Адрес ресторана обязателен")]

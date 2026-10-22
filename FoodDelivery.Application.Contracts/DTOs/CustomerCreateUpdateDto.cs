@@ -13,7 +13,7 @@ namespace FoodDelivery.Application.Contracts.DTOs;
 public record CustomerCreateUpdateDto(
     [property: Required(ErrorMessage = "Фамилия клиента обязательна")]
     [property: StringLength(100, ErrorMessage = "Фамилия не должна превышать 100 символов")]
-    [property: RegularExpression(@".\S.", ErrorMessage = "Фамилия не должна состоять только из пробелов")]
+    [property: RegularExpression(@".*\S.*", ErrorMessage = "Фамилия не должна состоять только из пробелов")]
     string LastName,
 
     [property: Required(ErrorMessage = "Имя клиента обязательно")]

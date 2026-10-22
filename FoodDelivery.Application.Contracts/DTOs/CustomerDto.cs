@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FoodDelivery.Application.Contracts.DTOs;
+﻿namespace FoodDelivery.Application.Contracts.DTOs;
 
 /// <summary>
 /// DTO клиента
@@ -13,28 +11,9 @@ namespace FoodDelivery.Application.Contracts.DTOs;
 /// <param name="DeliveryAddress">Адрес доставки клиента</param>
 public record CustomerDto(
     int Id,
-
-    [property: Required(ErrorMessage = "Фамилия клиента обязательна")]
-    [property: StringLength(100, ErrorMessage = "Фамилия не должна превышать 100 символов")]
-    [property: RegularExpression(@".\S.", ErrorMessage = "Фамилия не должна состоять только из пробелов")]
     string LastName,
-
-    [property: Required(ErrorMessage = "Имя клиента обязательно")]
-    [property: StringLength(100, ErrorMessage = "Имя не должно превышать 100 символов")]
-    [property: RegularExpression(@".*\S.*", ErrorMessage = "Имя не должно состоять только из пробелов")]
     string FirstName,
-
-    [property: StringLength(100, ErrorMessage = "Отчество не должно превышать 100 символов")]
-    [property: RegularExpression(@"^$|.*\S.*", ErrorMessage = "Отчество не должно состоять только из пробелов")]
     string? Patronymic,
-
-    [property: Required(ErrorMessage = "Номер телефона обязателен")]
-    [property: StringLength(20, MinimumLength = 5, ErrorMessage = "Номер телефона должен содержать от 5 до 20 символов")]
-    [property: RegularExpression(@"^\+?[0-9()\-\s]{5,20}$", ErrorMessage = "Укажите корректный номер телефона")]
     string Phone,
-
-    [property: Required(ErrorMessage = "Адрес доставки обязателен")]
-    [property: StringLength(250, ErrorMessage = "Адрес доставки не должен превышать 250 символов")]
-    [property: RegularExpression(@".*\S.*", ErrorMessage = "Адрес доставки не должен состоять только из пробелов")]
     string DeliveryAddress
 );

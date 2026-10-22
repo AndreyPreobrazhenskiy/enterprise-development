@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FoodDelivery.Application.Contracts.DTOs;
+﻿namespace FoodDelivery.Application.Contracts.DTOs;
 
 /// <summary>
 /// DTO блюда
@@ -13,21 +11,9 @@ namespace FoodDelivery.Application.Contracts.DTOs;
 /// <param name="RestaurantId">Идентификатор ресторана, которому принадлежит блюдо</param>
 public record DishDto(
     int Id,
-
-    [property: Required(ErrorMessage = "Название блюда обязательно")]
-    [property: StringLength(100, MinimumLength = 1, ErrorMessage = "Название блюда должно содержать от 1 до 100 символов")]
-    [property: RegularExpression(@".*\S.*", ErrorMessage = "Название блюда не должно состоять только из пробелов")]
     string Name,
-
-    [property: Range(1, int.MaxValue, ErrorMessage = "Вес блюда должен быть больше нуля")]
     int WeightGrams,
-
-    [property: Range(typeof(decimal), "0.01", "10000", ErrorMessage = "Цена блюда должна быть больше нуля")]
     decimal Price,
-
-    [property: Range(1, int.MaxValue, ErrorMessage = "Идентификатор категории должен быть положительным")]
     int CategoryId,
-
-    [property: Range(1, int.MaxValue, ErrorMessage = "Идентификатор ресторана должен быть положительным")]
     int RestaurantId
 );

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FoodDelivery.Application.Contracts.DTOs;
+﻿namespace FoodDelivery.Application.Contracts.DTOs;
 
 /// <summary>
 /// DTO позиции заказа
@@ -11,13 +9,7 @@ namespace FoodDelivery.Application.Contracts.DTOs;
 /// <param name="Quantity">Количество единиц блюда</param>
 public record OrderItemDto(
     int Id,
-
-    [property: Range(1, int.MaxValue, ErrorMessage = "Идентификатор заказа должен быть положительным")]
     int OrderId,
-
-    [property: Range(1, int.MaxValue, ErrorMessage = "Идентификатор блюда должен быть положительным")]
     int DishId,
-
-    [property: Range(1, 100, ErrorMessage = "Количество блюд должно быть от 1 до 100.")]
     int Quantity
 );

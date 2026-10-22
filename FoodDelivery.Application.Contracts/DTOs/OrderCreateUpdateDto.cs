@@ -17,10 +17,10 @@ public record OrderCreateUpdateDto(
     int RestaurantId,
 
     [property: Required(ErrorMessage = "Дата создания заказа обязательна")]
-    [property: Range(typeof(DateTime), "01/01/2000", "12/31/9999", ErrorMessage = "Укажите корректную дату создания заказа")]
+    [property: Range(typeof(DateTime), "01/01/2000", "12/31/9999", ParseLimitsInInvariantCulture = true, ErrorMessage = "Укажите корректную дату создания заказа")]
     DateTime CreatedAt,
 
     [property: Required(ErrorMessage = "Дата доставки обязательна")]
-    [property: Range(typeof(DateTime), "01/01/2000", "12/31/9999", ErrorMessage = "Укажите корректную дату доставки")]
+    [property: Range(typeof(DateTime), "01/01/2000", "12/31/9999", ParseLimitsInInvariantCulture = true, ErrorMessage = "Укажите корректную дату доставки")]
     DateTime DeliveredAt
 );
