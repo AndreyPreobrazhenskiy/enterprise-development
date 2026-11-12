@@ -9,7 +9,10 @@ namespace FoodDelivery.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/restaurants")]
-public class RestaurantsController(IRestaurantService restaurantService, ILogger<RestaurantsController> logger) : ControllerBase
+public class RestaurantsController(
+    IRestaurantService restaurantService,
+    ILogger<RestaurantsController> logger)
+    : ControllerBase
 {
     /// <summary>
     /// Возвращает все рестораны
@@ -17,17 +20,27 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     [HttpGet]
     [ProducesResponseType(typeof(IList<RestaurantDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<IList<RestaurantDto>> GetAll()
+    public async Task<ActionResult<IList<RestaurantDto>>> GetAll()
     {
         try
         {
-            logger.LogInformation("Получен запрос на получение всех ресторанов");
-            return Ok(restaurantService.GetAll());
+            logger.LogInformation(
+                "Получен запрос на получение всех ресторанов");
+
+            var restaurants =
+                await restaurantService.GetAllAsync();
+
+            return Ok(restaurants);
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при получении списка ресторанов");
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при получении списка ресторанов");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -38,23 +51,31 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     [ProducesResponseType(typeof(RestaurantDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<RestaurantDto> GetById(int id)
+    public async Task<ActionResult<RestaurantDto>> GetById(int id)
     {
         try
         {
-            var restaurant = restaurantService.Get(id);
+            var restaurant =
+                await restaurantService.GetAsync(id);
 
             if (restaurant is null)
             {
-                return NotFound(new { message = "Ресторан не найден" });
+                return NotFound(
+                    new { message = "Ресторан не найден" });
             }
 
             return Ok(restaurant);
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при получении ресторана {RestaurantId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при получении ресторана {RestaurantId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -65,23 +86,41 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     [ProducesResponseType(typeof(RestaurantDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<RestaurantDto> Create(RestaurantCreateUpdateDto dto)
+    public async Task<ActionResult<RestaurantDto>> Create(
+        RestaurantCreateUpdateDto dto)
     {
         try
         {
-            var restaurant = restaurantService.Create(dto);
-            logger.LogInformation("Создан ресторан {RestaurantId}", restaurant.Id);
-            return CreatedAtAction(nameof(GetById), new { id = restaurant.Id }, restaurant);
+            var restaurant =
+                await restaurantService.CreateAsync(dto);
+
+            logger.LogInformation(
+                "Создан ресторан {RestaurantId}",
+                restaurant.Id);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = restaurant.Id },
+                restaurant);
         }
         catch (ArgumentException exception)
         {
-            logger.LogWarning(exception, "Некорректные данные при создании ресторана");
-            return BadRequest(new { message = "Переданы некорректные данные" });
+            logger.LogWarning(
+                exception,
+                "Некорректные данные при создании ресторана");
+
+            return BadRequest(
+                new { message = "Переданы некорректные данные" });
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при создании ресторана");
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при создании ресторана");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -93,31 +132,50 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<RestaurantDto> Update(int id, RestaurantCreateUpdateDto dto)
+    public async Task<ActionResult<RestaurantDto>> Update(
+        int id,
+        RestaurantCreateUpdateDto dto)
     {
         try
         {
-            if (restaurantService.Get(id) is null)
+            var existingRestaurant =
+                await restaurantService.GetAsync(id);
+
+            if (existingRestaurant is null)
             {
-                return NotFound(new { message = "Ресторан не найден" });
+                return NotFound(
+                    new { message = "Ресторан не найден" });
             }
 
-            return Ok(restaurantService.Update(dto, id));
-        }
-        catch (KeyNotFoundException exception)
-        {
-            logger.LogWarning(exception, "Не найдена связанная сущность при обновлении ресторана {RestaurantId}", id);
-            return BadRequest(new { message = "Невозможно обновить ресторан из-за отсутствующей связанной сущности" });
+            var updatedRestaurant =
+                await restaurantService.UpdateAsync(dto, id);
+
+            logger.LogInformation(
+                "Обновлён ресторан {RestaurantId}",
+                id);
+
+            return Ok(updatedRestaurant);
         }
         catch (ArgumentException exception)
         {
-            logger.LogWarning(exception, "Некорректные данные при обновлении ресторана {RestaurantId}", id);
-            return BadRequest(new { message = "Переданы некорректные данные" });
+            logger.LogWarning(
+                exception,
+                "Некорректные данные при обновлении ресторана {RestaurantId}",
+                id);
+
+            return BadRequest(
+                new { message = "Переданы некорректные данные" });
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при обновлении ресторана {RestaurantId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при обновлении ресторана {RestaurantId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -127,23 +185,32 @@ public class RestaurantsController(IRestaurantService restaurantService, ILogger
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {
-            var deleted = restaurantService.Delete(id);
+            var deleted =
+                await restaurantService.DeleteAsync(id);
 
             if (deleted)
             {
-                logger.LogInformation("Удалён ресторан {RestaurantId}", id);
+                logger.LogInformation(
+                    "Удалён ресторан {RestaurantId}",
+                    id);
             }
 
             return NoContent();
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при удалении ресторана {RestaurantId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при удалении ресторана {RestaurantId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 }

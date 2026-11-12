@@ -7,8 +7,8 @@ namespace FoodDelivery.Application.Contracts.DTOs;
 /// </summary>
 /// <param name="Name">Название категории</param>
 public record CategoryCreateUpdateDto(
-    [property: Required(ErrorMessage = "Название категории обязательно")]
-    [property: StringLength(100, MinimumLength = 1, ErrorMessage = "Название категории не должно превышать 100 символов")]
-    [property: RegularExpression(@".*\S.*", ErrorMessage = "Название категории не должно состоять только из пробелов")]
+    [Required(ErrorMessage = "Название категории обязательно")]
+    [StringLength(100, MinimumLength = 1, ErrorMessage = "Название категории не должно превышать 100 символов")]
+    [RegularExpression(@".*\S.*", ErrorMessage = "Название категории не должно состоять только из пробелов")]
     string Name
 );

@@ -9,25 +9,25 @@ public interface IRepository<T>
     /// <summary>
     /// Возвращает список всех сущностей
     /// </summary>
-    IList<T> GetAll();
+    Task<IList<T>> GetAllAsync();
 
     /// <summary>
     /// Возвращает сущность по идентификатору
     /// </summary>
-    T? GetById(int id);
+    Task<T?> GetByIdAsync(int id);
 
     /// <summary>
     /// Добавляет новую сущность
     /// </summary>
-    T Add(T entity);
+    Task<T> AddAsync(T entity);
 
     /// <summary>
     /// Обновляет существующую сущность
     /// </summary>
-    T? Update(T entity);
+    Task<T?> UpdateAsync(T entity);
 
     /// <summary>
     /// Удаляет сущность по идентификатору
     /// </summary>
-    bool Delete(int id);
+    Task<bool> DeleteAsync(int id);
 }

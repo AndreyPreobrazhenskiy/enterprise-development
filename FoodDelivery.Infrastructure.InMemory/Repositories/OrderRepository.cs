@@ -7,12 +7,14 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// <summary>
 /// Реализует репозиторий заказов
 /// </summary>
-public class OrderRepository() : InMemoryRepository<Order>(TestData.Orders), IOrderRepository
+public class OrderRepository()
+    : InMemoryRepository<Order>(TestData.Orders),
+      IOrderRepository
 {
     /// <inheritdoc />
-    public override Order? Update(Order order)
+    public override async Task<Order?> UpdateAsync(Order order)
     {
-        var existingOrder = GetById(order.Id);
+        var existingOrder = await GetByIdAsync(order.Id);
 
         if (existingOrder is null)
         {
@@ -30,9 +32,9 @@ public class OrderRepository() : InMemoryRepository<Order>(TestData.Orders), IOr
     }
 
     /// <inheritdoc />
-    public override bool Delete(int id)
+    public override async Task<bool> DeleteAsync(int id)
     {
-        var order = GetById(id);
+        var order = await GetByIdAsync(id);
 
         if (order is null)
         {
@@ -50,6 +52,6 @@ public class OrderRepository() : InMemoryRepository<Order>(TestData.Orders), IOr
 
         order.Items.Clear();
 
-        return base.Delete(id);
+        return await base.DeleteAsync(id);
     }
 }

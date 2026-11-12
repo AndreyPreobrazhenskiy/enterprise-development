@@ -9,25 +9,39 @@ namespace FoodDelivery.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/categories")]
-public class CategoriesController(ICategoryService categoryService, ILogger<CategoriesController> logger) : ControllerBase
+public class CategoriesController(
+    ICategoryService categoryService,
+    ILogger<CategoriesController> logger)
+    : ControllerBase
 {
     /// <summary>
     /// Возвращает все категории
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(IList<CategoryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(IList<CategoryDto>),
+        StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<IList<CategoryDto>> GetAll()
+    public async Task<ActionResult<IList<CategoryDto>>> GetAll()
     {
         try
         {
-            logger.LogInformation("Получен запрос на получение всех категорий");
-            return Ok(categoryService.GetAll());
+            logger.LogInformation(
+                "Получен запрос на получение всех категорий");
+
+            var categories = await categoryService.GetAllAsync();
+
+            return Ok(categories);
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при получении списка категорий");
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при получении списка категорий");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -35,26 +49,37 @@ public class CategoriesController(ICategoryService categoryService, ILogger<Cate
     /// Возвращает категорию по идентификатору
     /// </summary>
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(CategoryDto),
+        StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<CategoryDto> GetById(int id)
+    public async Task<ActionResult<CategoryDto>> GetById(int id)
     {
         try
         {
-            var category = categoryService.Get(id);
+            var category = await categoryService.GetAsync(id);
 
             if (category is null)
             {
-                return NotFound(new { message = "Категория не найдена" });
+                return NotFound(new
+                {
+                    message = "Категория не найдена"
+                });
             }
 
             return Ok(category);
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при получении категории {CategoryId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при получении категории {CategoryId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -62,26 +87,48 @@ public class CategoriesController(ICategoryService categoryService, ILogger<Cate
     /// Создаёт категорию
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(
+        typeof(CategoryDto),
+        StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<CategoryDto> Create(CategoryCreateUpdateDto dto)
+    public async Task<ActionResult<CategoryDto>> Create(
+        CategoryCreateUpdateDto dto)
     {
         try
         {
-            var category = categoryService.Create(dto);
-            logger.LogInformation("Создана категория {CategoryId}", category.Id);
-            return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
+            var category =
+                await categoryService.CreateAsync(dto);
+
+            logger.LogInformation(
+                "Создана категория {CategoryId}",
+                category.Id);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = category.Id },
+                category);
         }
         catch (ArgumentException exception)
         {
-            logger.LogWarning(exception, "Некорректные данные при создании категории");
-            return BadRequest(new { message = "Переданы некорректные данные" });
+            logger.LogWarning(
+                exception,
+                "Некорректные данные при создании категории");
+
+            return BadRequest(new
+            {
+                message = "Переданы некорректные данные"
+            });
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при создании категории");
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при создании категории");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -89,35 +136,69 @@ public class CategoriesController(ICategoryService categoryService, ILogger<Cate
     /// Обновляет категорию
     /// </summary>
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(CategoryDto),
+        StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<CategoryDto> Update(int id, CategoryCreateUpdateDto dto)
+    public async Task<ActionResult<CategoryDto>> Update(
+        int id,
+        CategoryCreateUpdateDto dto)
     {
         try
         {
-            if (categoryService.Get(id) is null)
+            var existingCategory =
+                await categoryService.GetAsync(id);
+
+            if (existingCategory is null)
             {
-                return NotFound(new { message = "Категория не найдена" });
+                return NotFound(new
+                {
+                    message = "Категория не найдена"
+                });
             }
 
-            return Ok(categoryService.Update(dto, id));
+            var updatedCategory =
+                await categoryService.UpdateAsync(dto, id);
+
+            return Ok(updatedCategory);
         }
         catch (KeyNotFoundException exception)
         {
-            logger.LogWarning(exception, "Не найдена связанная сущность при обновлении категории {CategoryId}", id);
-            return BadRequest(new { message = "Невозможно обновить категорию из-за отсутствующей связанной сущности" });
+            logger.LogWarning(
+                exception,
+                "Не найдена связанная сущность при обновлении категории {CategoryId}",
+                id);
+
+            return BadRequest(new
+            {
+                message =
+                    "Невозможно обновить категорию из-за отсутствующей связанной сущности"
+            });
         }
         catch (ArgumentException exception)
         {
-            logger.LogWarning(exception, "Некорректные данные при обновлении категории {CategoryId}", id);
-            return BadRequest(new { message = "Переданы некорректные данные" });
+            logger.LogWarning(
+                exception,
+                "Некорректные данные при обновлении категории {CategoryId}",
+                id);
+
+            return BadRequest(new
+            {
+                message = "Переданы некорректные данные"
+            });
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при обновлении категории {CategoryId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при обновлении категории {CategoryId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -127,23 +208,32 @@ public class CategoriesController(ICategoryService categoryService, ILogger<Cate
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {
-            var deleted = categoryService.Delete(id);
+            var deleted =
+                await categoryService.DeleteAsync(id);
 
             if (deleted)
             {
-                logger.LogInformation("Удалена категория {CategoryId}", id);
+                logger.LogInformation(
+                    "Удалена категория {CategoryId}",
+                    id);
             }
 
             return NoContent();
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при удалении категории {CategoryId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при удалении категории {CategoryId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 }

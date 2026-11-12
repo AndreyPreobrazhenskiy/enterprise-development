@@ -12,41 +12,46 @@ public abstract class InMemoryRepository<T>(
     where T : IEntity
 {
     /// <inheritdoc />
-    public IList<T> GetAll()
+    public Task<IList<T>> GetAllAsync()
     {
-        return entities;
+        return Task.FromResult(entities);
     }
 
     /// <inheritdoc />
-    public T? GetById(int id)
+    public Task<T?> GetByIdAsync(int id)
     {
-        return entities.FirstOrDefault(entity => entity.Id == id);
+        var entity = entities.FirstOrDefault(entity => entity.Id == id);
+
+        return Task.FromResult(entity);
     }
 
     /// <inheritdoc />
-    public T Add(T entity)
+    public Task<T> AddAsync(T entity)
     {
         entity.Id = entities.Count == 0
             ? 1
             : entities.Max(item => item.Id) + 1;
 
         entities.Add(entity);
-        return entity;
+
+        return Task.FromResult(entity);
     }
 
     /// <inheritdoc />
-    public abstract T? Update(T entity);
+    public abstract Task<T?> UpdateAsync(T entity);
 
     /// <inheritdoc />
-    public virtual bool Delete(int id)
+    public virtual Task<bool> DeleteAsync(int id)
     {
-        var entity = GetById(id);
+        var entity = entities.FirstOrDefault(entity => entity.Id == id);
 
         if (entity is null)
         {
-            return false;
+            return Task.FromResult(false);
         }
 
-        return entities.Remove(entity);
+        entities.Remove(entity);
+
+        return Task.FromResult(true);
     }
 }

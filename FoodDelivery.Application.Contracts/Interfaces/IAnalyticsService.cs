@@ -8,27 +8,34 @@ namespace FoodDelivery.Application.Contracts.Interfaces;
 public interface IAnalyticsService
 {
     /// <summary>
-    /// Получает сводную информацию о заказах по категориям за период
+    /// Асинхронно получает сводную информацию о заказах по категориям за период
     /// </summary>
-    IList<CategoryOrderSummaryDto> GetOrdersByCategoryForPeriod(DateTime periodStart, DateTime periodEnd);
+    Task<IList<CategoryOrderSummaryDto>>
+        GetOrdersByCategoryForPeriodAsync(
+            DateTime periodStart,
+            DateTime periodEnd);
 
     /// <summary>
-    /// Получает клиентов, делавших заказы в указанном ресторане
+    /// Асинхронно получает клиентов, делавших заказы в указанном ресторане
     /// </summary>
-    IList<CustomerOrderSummaryDto> GetCustomersByRestaurant(int restaurantId);
+    Task<IList<CustomerOrderSummaryDto>>
+        GetCustomersByRestaurantAsync(int restaurantId);
 
     /// <summary>
-    /// Получает клиента с максимальной общей суммой заказов
+    /// Асинхронно получает клиента с максимальной общей суммой заказов
     /// </summary>
-    CustomerOrderSummaryDto? GetCustomerWithMaxTotalOrderAmount();
+    Task<CustomerOrderSummaryDto?>
+        GetCustomerWithMaxTotalOrderAmountAsync();
 
     /// <summary>
-    /// Получает заказы с минимальным временем доставки
+    /// Асинхронно получает заказы с минимальным временем доставки
     /// </summary>
-    IList<OrderDeliveryTimeDto> GetOrdersWithMinDeliveryTime();
+    Task<IList<OrderDeliveryTimeDto>>
+        GetOrdersWithMinDeliveryTimeAsync();
 
     /// <summary>
-    /// Получает топ ресторанов по количеству заказов
+    /// Асинхронно получает топ ресторанов по количеству заказов
     /// </summary>
-    IList<RestaurantOrderCountDto> GetTopRestaurantsByOrderCount(int count);
+    Task<IList<RestaurantOrderCountDto>>
+        GetTopRestaurantsByOrderCountAsync(int count);
 }

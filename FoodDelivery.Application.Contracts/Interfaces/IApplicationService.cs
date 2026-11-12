@@ -1,32 +1,33 @@
 ﻿namespace FoodDelivery.Application.Contracts.Interfaces;
 
 /// <summary>
-/// Определяет стандартные операции CRUD для прикладных сервисов
+/// Определяет стандартные асинхронные операции CRUD для прикладных сервисов
 /// </summary>
 public interface IApplicationService<TDto, TCreateUpdateDto, TKey>
 {
     /// <summary>
-    /// Создаёт новую запись
+    /// Асинхронно создаёт новую запись
     /// </summary>
-    TDto Create(TCreateUpdateDto dto);
+
+    Task<TDto> CreateAsync(TCreateUpdateDto dto);
 
     /// <summary>
-    /// Возвращает запись по идентификатору
+    /// Асинхронно возвращает запись по идентификатору
     /// </summary>
-    TDto? Get(TKey id);
+    Task<TDto?> GetAsync(TKey id);
 
     /// <summary>
-    /// Возвращает все записи
+    /// Асинхронно возвращает все записи
     /// </summary>
-    IList<TDto> GetAll();
+    Task<IList<TDto>> GetAllAsync();
 
     /// <summary>
-    /// Обновляет существующую запись
+    /// Асинхронно обновляет существующую запись
     /// </summary>
-    TDto Update(TCreateUpdateDto dto, TKey id);
+    Task<TDto> UpdateAsync(TCreateUpdateDto dto, TKey id);
 
     /// <summary>
-    /// Удаляет запись
+    /// Асинхронно удаляет запись
     /// </summary>
-    bool Delete(TKey id);
+    Task<bool> DeleteAsync(TKey id);
 }

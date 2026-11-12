@@ -12,9 +12,9 @@ public class CategoryRepository()
       ICategoryRepository
 {
     /// <inheritdoc />
-    public override Category? Update(Category category)
+    public override async Task<Category?> UpdateAsync(Category category)
     {
-        var existingCategory = GetById(category.Id);
+        var existingCategory = await GetByIdAsync(category.Id);
 
         if (existingCategory is null)
         {
@@ -22,6 +22,7 @@ public class CategoryRepository()
         }
 
         existingCategory.Name = category.Name;
+
         return existingCategory;
     }
 }

@@ -9,12 +9,12 @@ namespace FoodDelivery.Application.Contracts.DTOs;
 /// <param name="DishId">Идентификатор блюда</param>
 /// <param name="Quantity">Количество единиц блюда</param>
 public record OrderItemCreateUpdateDto(
-    [property: Range(1, int.MaxValue, ErrorMessage = "Идентификатор заказа должен быть положительным")]
+    [Range(1, int.MaxValue, ErrorMessage = "Идентификатор заказа должен быть положительным")]
     int OrderId,
 
-    [property: Range(1, int.MaxValue, ErrorMessage = "Идентификатор блюда должен быть положительным")]
+    [Range(1, int.MaxValue, ErrorMessage = "Идентификатор блюда должен быть положительным")]
     int DishId,
 
-    [property: Range(1, 100, ErrorMessage = "Количество блюд должно быть от 1 до 100.")]
+    [Range(1, 100, ErrorMessage = "Количество блюд должно быть от 1 до 100.")]
     int Quantity
 );

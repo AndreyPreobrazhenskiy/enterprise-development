@@ -6,7 +6,7 @@ using FoodDelivery.Domain.Entities;
 namespace FoodDelivery.Application.Services;
 
 /// <summary>
-/// Реализует прикладные операции над блюдами.
+/// Реализует прикладные операции над блюдами
 /// </summary>
 public class DishService(
     IDishRepository dishRepository,
@@ -14,13 +14,14 @@ public class DishService(
     IRestaurantRepository restaurantRepository)
     : IDishService
 {
-    public DishDto Create(DishCreateUpdateDto dto)
+    /// <inheritdoc />
+    public async Task<DishDto> CreateAsync(DishCreateUpdateDto dto)
     {
-        var category = categoryRepository.GetById(dto.CategoryId)
+        var category = await categoryRepository.GetByIdAsync(dto.CategoryId)
             ?? throw new KeyNotFoundException(
                 $"Категория с идентификатором {dto.CategoryId} не найдена");
 
-        var restaurant = restaurantRepository.GetById(dto.RestaurantId)
+        var restaurant = await restaurantRepository.GetByIdAsync(dto.RestaurantId)
             ?? throw new KeyNotFoundException(
                 $"Ресторан с идентификатором {dto.RestaurantId} не найден");
 
@@ -36,71 +37,63 @@ public class DishService(
             Restaurant = restaurant
         };
 
-        var created = dishRepository.Add(dish);
-        restaurant.Dishes.Add(created);
+        var created = await dishRepository.AddAsync(dish);
 
         return MapToDto(created);
     }
 
-    public DishDto? Get(int id)
+    /// <inheritdoc />
+    public async Task<DishDto?> GetAsync(int id)
     {
-        var dish = dishRepository.GetById(id);
+        var dish = await dishRepository.GetByIdAsync(id);
+
         return dish is null ? null : MapToDto(dish);
     }
 
-    public IList<DishDto> GetAll()
+    /// <inheritdoc />
+    public async Task<IList<DishDto>> GetAllAsync()
     {
-        return dishRepository.GetAll()
+        var dishes = await dishRepository.GetAllAsync();
+
+        return dishes
             .Select(MapToDto)
             .ToList();
     }
 
-    public DishDto Update(DishCreateUpdateDto dto, int id)
+    /// <inheritdoc />
+    public async Task<DishDto> UpdateAsync(
+        DishCreateUpdateDto dto,
+        int id)
     {
-        var existing = dishRepository.GetById(id)
+        var existing = await dishRepository.GetByIdAsync(id)
             ?? throw new KeyNotFoundException(
                 $"Блюдо с идентификатором {id} не найдено");
 
-        var category = categoryRepository.GetById(dto.CategoryId)
+        _ = await categoryRepository.GetByIdAsync(dto.CategoryId)
             ?? throw new KeyNotFoundException(
                 $"Категория с идентификатором {dto.CategoryId} не найдена");
 
-        var restaurant = restaurantRepository.GetById(dto.RestaurantId)
+        _ = await restaurantRepository.GetByIdAsync(dto.RestaurantId)
             ?? throw new KeyNotFoundException(
                 $"Ресторан с идентификатором {dto.RestaurantId} не найден");
-
-        if (existing.RestaurantId != restaurant.Id)
-        {
-            existing.Restaurant.Dishes.Remove(existing);
-            restaurant.Dishes.Add(existing);
-        }
 
         existing.Name = dto.Name;
         existing.WeightGrams = dto.WeightGrams;
         existing.Price = dto.Price;
-        existing.CategoryId = category.Id;
-        existing.Category = category;
-        existing.RestaurantId = restaurant.Id;
-        existing.Restaurant = restaurant;
+        existing.CategoryId = dto.CategoryId;
+        existing.RestaurantId = dto.RestaurantId;
 
-        var updated = dishRepository.Update(existing)
+        var updated = await dishRepository.UpdateAsync(existing)
             ?? throw new KeyNotFoundException(
                 $"Блюдо с идентификатором {id} не найдено");
 
         return MapToDto(updated);
     }
 
-    public bool Delete(int id)
+    /// <inheritdoc />
+    public async Task<bool> DeleteAsync(int id)
     {
-        var dish = dishRepository.GetById(id);
-
-        if (dish is null)
-        {
-            return false;
-        }
-
-        dish.Restaurant.Dishes.Remove(dish);
-        return dishRepository.Delete(id);
+        return await dishRepository.DeleteAsync(id);
     }
 
     private static DishDto MapToDto(Dish dish)

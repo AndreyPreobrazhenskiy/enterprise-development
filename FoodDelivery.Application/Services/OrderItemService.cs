@@ -14,13 +14,15 @@ public class OrderItemService(
     IDishRepository dishRepository)
     : IOrderItemService
 {
-    public OrderItemDto Create(OrderItemCreateUpdateDto dto)
+    /// <inheritdoc />
+    public async Task<OrderItemDto> CreateAsync(
+        OrderItemCreateUpdateDto dto)
     {
-        var order = orderRepository.GetById(dto.OrderId)
+        var order = await orderRepository.GetByIdAsync(dto.OrderId)
             ?? throw new KeyNotFoundException(
                 $"Заказ с идентификатором {dto.OrderId} не найден");
 
-        var dish = dishRepository.GetById(dto.DishId)
+        var dish = await dishRepository.GetByIdAsync(dto.DishId)
             ?? throw new KeyNotFoundException(
                 $"Блюдо с идентификатором {dto.DishId} не найдено");
 
@@ -33,71 +35,62 @@ public class OrderItemService(
             Quantity = dto.Quantity
         };
 
-        var created = orderItemRepository.Add(item);
-        order.Items.Add(created);
+        var created = await orderItemRepository.AddAsync(item);
 
         return MapToDto(created);
     }
 
-    public OrderItemDto? Get(int id)
+    /// <inheritdoc />
+    public async Task<OrderItemDto?> GetAsync(int id)
     {
-        var item = orderItemRepository.GetById(id);
+        var item = await orderItemRepository.GetByIdAsync(id);
+
         return item is null ? null : MapToDto(item);
     }
 
-    public IList<OrderItemDto> GetAll()
+    /// <inheritdoc />
+    public async Task<IList<OrderItemDto>> GetAllAsync()
     {
-        return orderItemRepository.GetAll()
+        var orderItems = await orderItemRepository.GetAllAsync();
+
+        return orderItems
             .Select(MapToDto)
             .ToList();
     }
 
-    public OrderItemDto Update(OrderItemCreateUpdateDto dto, int id)
+    /// <inheritdoc />
+    public async Task<OrderItemDto> UpdateAsync(
+        OrderItemCreateUpdateDto dto,
+        int id)
     {
-        var item = orderItemRepository.GetById(id)
+        var item = await orderItemRepository.GetByIdAsync(id)
             ?? throw new KeyNotFoundException(
                 $"Позиция заказа с идентификатором {id} не найдена");
 
-        var order = orderRepository.GetById(dto.OrderId)
+        var order = await orderRepository.GetByIdAsync(dto.OrderId)
             ?? throw new KeyNotFoundException(
                 $"Заказ с идентификатором {dto.OrderId} не найден");
 
-        var dish = dishRepository.GetById(dto.DishId)
+        var dish = await dishRepository.GetByIdAsync(dto.DishId)
             ?? throw new KeyNotFoundException(
                 $"Блюдо с идентификатором {dto.DishId} не найдено");
-
-        if (item.OrderId != order.Id)
-        {
-            var oldOrder = orderRepository.GetById(item.OrderId);
-            oldOrder?.Items.Remove(item);
-            order.Items.Add(item);
-        }
 
         item.OrderId = order.Id;
         item.DishId = dish.Id;
         item.Dish = dish;
         item.Quantity = dto.Quantity;
 
-        var updated = orderItemRepository.Update(item)
+        var updated = await orderItemRepository.UpdateAsync(item)
             ?? throw new KeyNotFoundException(
                 $"Позиция заказа с идентификатором {id} не найдена");
 
         return MapToDto(updated);
     }
 
-    public bool Delete(int id)
+    /// <inheritdoc />
+    public async Task<bool> DeleteAsync(int id)
     {
-        var item = orderItemRepository.GetById(id);
-
-        if (item is null)
-        {
-            return false;
-        }
-
-        var order = orderRepository.GetById(item.OrderId);
-        order?.Items.Remove(item);
-
-        return orderItemRepository.Delete(id);
+        return await orderItemRepository.DeleteAsync(id);
     }
 
     private static OrderItemDto MapToDto(OrderItem item)

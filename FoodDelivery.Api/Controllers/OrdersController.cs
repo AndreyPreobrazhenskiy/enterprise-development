@@ -9,25 +9,39 @@ namespace FoodDelivery.Api.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/orders")]
-public class OrdersController(IOrderService orderService, ILogger<OrdersController> logger) : ControllerBase
+public class OrdersController(
+    IOrderService orderService,
+    ILogger<OrdersController> logger)
+    : ControllerBase
 {
     /// <summary>
     /// Возвращает все заказы
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(typeof(IList<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(IList<OrderDto>),
+        StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<IList<OrderDto>> GetAll()
+    public async Task<ActionResult<IList<OrderDto>>> GetAll()
     {
         try
         {
-            logger.LogInformation("Получен запрос на получение всех заказов");
-            return Ok(orderService.GetAll());
+            logger.LogInformation(
+                "Получен запрос на получение всех заказов");
+
+            var orders = await orderService.GetAllAsync();
+
+            return Ok(orders);
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при получении списка заказов");
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при получении списка заказов");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -35,26 +49,37 @@ public class OrdersController(IOrderService orderService, ILogger<OrdersControll
     /// Возвращает заказ по идентификатору
     /// </summary>
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(OrderDto),
+        StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<OrderDto> GetById(int id)
+    public async Task<ActionResult<OrderDto>> GetById(int id)
     {
         try
         {
-            var order = orderService.Get(id);
+            var order = await orderService.GetAsync(id);
 
             if (order is null)
             {
-                return NotFound(new { message = "Заказ не найден" });
+                return NotFound(new
+                {
+                    message = "Заказ не найден"
+                });
             }
 
             return Ok(order);
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при получении заказа {OrderId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при получении заказа {OrderId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -62,20 +87,32 @@ public class OrdersController(IOrderService orderService, ILogger<OrdersControll
     /// Создаёт заказ
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(
+        typeof(OrderDto),
+        StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<OrderDto> Create(OrderCreateUpdateDto dto)
+    public async Task<ActionResult<OrderDto>> Create(
+        OrderCreateUpdateDto dto)
     {
         try
         {
-            var order = orderService.Create(dto);
-            logger.LogInformation("Создан заказ {OrderId}", order.Id);
-            return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
+            var order = await orderService.CreateAsync(dto);
+
+            logger.LogInformation(
+                "Создан заказ {OrderId}",
+                order.Id);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = order.Id },
+                order);
         }
         catch (KeyNotFoundException exception)
         {
-            logger.LogWarning(exception, "Не найдена связанная сущность при создании заказа");
+            logger.LogWarning(
+                exception,
+                "Не найдена связанная сущность при создании заказа");
 
             return BadRequest(new
             {
@@ -84,13 +121,24 @@ public class OrdersController(IOrderService orderService, ILogger<OrdersControll
         }
         catch (ArgumentException exception)
         {
-            logger.LogWarning(exception, "Некорректные данные при создании заказа");
-            return BadRequest(new { message = "Переданы некорректные данные" });
+            logger.LogWarning(
+                exception,
+                "Некорректные данные при создании заказа");
+
+            return BadRequest(new
+            {
+                message = "Переданы некорректные данные"
+            });
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при создании заказа");
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при создании заказа");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -98,24 +146,44 @@ public class OrdersController(IOrderService orderService, ILogger<OrdersControll
     /// Обновляет заказ
     /// </summary>
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(OrderDto),
+        StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public ActionResult<OrderDto> Update(int id, OrderCreateUpdateDto dto)
+    public async Task<ActionResult<OrderDto>> Update(
+        int id,
+        OrderCreateUpdateDto dto)
     {
         try
         {
-            if (orderService.Get(id) is null)
+            var existingOrder =
+                await orderService.GetAsync(id);
+
+            if (existingOrder is null)
             {
-                return NotFound(new { message = "Заказ не найден" });
+                return NotFound(new
+                {
+                    message = "Заказ не найден"
+                });
             }
 
-            return Ok(orderService.Update(dto, id));
+            var updatedOrder =
+                await orderService.UpdateAsync(dto, id);
+
+            logger.LogInformation(
+                "Обновлён заказ {OrderId}",
+                id);
+
+            return Ok(updatedOrder);
         }
         catch (KeyNotFoundException exception)
         {
-            logger.LogWarning(exception, "Не найдена связанная сущность при обновлении заказа {OrderId}", id);
+            logger.LogWarning(
+                exception,
+                "Не найдена связанная сущность при обновлении заказа {OrderId}",
+                id);
 
             return BadRequest(new
             {
@@ -124,13 +192,26 @@ public class OrdersController(IOrderService orderService, ILogger<OrdersControll
         }
         catch (ArgumentException exception)
         {
-            logger.LogWarning(exception, "Некорректные данные при обновлении заказа {OrderId}", id);
-            return BadRequest(new { message = "Переданы некорректные данные" });
+            logger.LogWarning(
+                exception,
+                "Некорректные данные при обновлении заказа {OrderId}",
+                id);
+
+            return BadRequest(new
+            {
+                message = "Переданы некорректные данные"
+            });
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при обновлении заказа {OrderId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при обновлении заказа {OrderId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 
@@ -140,23 +221,32 @@ public class OrdersController(IOrderService orderService, ILogger<OrdersControll
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {
-            var deleted = orderService.Delete(id);
+            var deleted =
+                await orderService.DeleteAsync(id);
 
             if (deleted)
             {
-                logger.LogInformation("Удалён заказ {OrderId}", id);
+                logger.LogInformation(
+                    "Удалён заказ {OrderId}",
+                    id);
             }
 
             return NoContent();
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Ошибка при удалении заказа {OrderId}", id);
-            return StatusCode(500, new { message = "Внутренняя ошибка сервера" });
+            logger.LogError(
+                exception,
+                "Ошибка при удалении заказа {OrderId}",
+                id);
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
         }
     }
 }

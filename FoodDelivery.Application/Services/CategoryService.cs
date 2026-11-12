@@ -8,12 +8,10 @@ namespace FoodDelivery.Application.Services;
 /// <summary>
 /// Реализует прикладные операции над категориями
 /// </summary>
-public class CategoryService(
-    ICategoryRepository categoryRepository)
-    : ICategoryService
+public class CategoryService(ICategoryRepository categoryRepository) : ICategoryService
 {
     /// <inheritdoc />
-    public CategoryDto Create(CategoryCreateUpdateDto dto)
+    public async Task<CategoryDto> CreateAsync(CategoryCreateUpdateDto dto)
     {
         var category = new Category
         {
@@ -21,29 +19,33 @@ public class CategoryService(
             Name = dto.Name
         };
 
-        var createdCategory = categoryRepository.Add(category);
+        var createdCategory = await categoryRepository.AddAsync(category);
 
         return MapToDto(createdCategory);
     }
 
     /// <inheritdoc />
-    public CategoryDto? Get(int id)
+    public async Task<CategoryDto?> GetAsync(int id)
     {
-        var category = categoryRepository.GetById(id);
+        var category = await categoryRepository.GetByIdAsync(id);
 
         return category is null ? null : MapToDto(category);
     }
 
     /// <inheritdoc />
-    public IList<CategoryDto> GetAll()
+    public async Task<IList<CategoryDto>> GetAllAsync()
     {
-        return categoryRepository.GetAll()
+        var categories = await categoryRepository.GetAllAsync();
+
+        return categories
             .Select(MapToDto)
             .ToList();
     }
 
     /// <inheritdoc />
-    public CategoryDto Update(CategoryCreateUpdateDto dto, int id)
+    public async Task<CategoryDto> UpdateAsync(
+        CategoryCreateUpdateDto dto,
+        int id)
     {
         var category = new Category
         {
@@ -51,7 +53,8 @@ public class CategoryService(
             Name = dto.Name
         };
 
-        var updatedCategory = categoryRepository.Update(category);
+        var updatedCategory =
+            await categoryRepository.UpdateAsync(category);
 
         if (updatedCategory is null)
         {
@@ -63,9 +66,9 @@ public class CategoryService(
     }
 
     /// <inheritdoc />
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        return categoryRepository.Delete(id);
+        return await categoryRepository.DeleteAsync(id);
     }
 
     private static CategoryDto MapToDto(Category category)

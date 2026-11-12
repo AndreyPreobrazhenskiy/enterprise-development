@@ -12,7 +12,9 @@ public class RestaurantService(
     IRestaurantRepository restaurantRepository)
     : IRestaurantService
 {
-    public RestaurantDto Create(RestaurantCreateUpdateDto dto)
+    /// <inheritdoc />
+    public async Task<RestaurantDto> CreateAsync(
+        RestaurantCreateUpdateDto dto)
     {
         var restaurant = new Restaurant
         {
@@ -24,23 +26,38 @@ public class RestaurantService(
             ClosingTime = dto.ClosingTime
         };
 
-        return MapToDto(restaurantRepository.Add(restaurant));
+        var createdRestaurant =
+            await restaurantRepository.AddAsync(restaurant);
+
+        return MapToDto(createdRestaurant);
     }
 
-    public RestaurantDto? Get(int id)
+    /// <inheritdoc />
+    public async Task<RestaurantDto?> GetAsync(int id)
     {
-        var restaurant = restaurantRepository.GetById(id);
-        return restaurant is null ? null : MapToDto(restaurant);
+        var restaurant =
+            await restaurantRepository.GetByIdAsync(id);
+
+        return restaurant is null
+            ? null
+            : MapToDto(restaurant);
     }
 
-    public IList<RestaurantDto> GetAll()
+    /// <inheritdoc />
+    public async Task<IList<RestaurantDto>> GetAllAsync()
     {
-        return restaurantRepository.GetAll()
+        var restaurants =
+            await restaurantRepository.GetAllAsync();
+
+        return restaurants
             .Select(MapToDto)
             .ToList();
     }
 
-    public RestaurantDto Update(RestaurantCreateUpdateDto dto, int id)
+    /// <inheritdoc />
+    public async Task<RestaurantDto> UpdateAsync(
+        RestaurantCreateUpdateDto dto,
+        int id)
     {
         var restaurant = new Restaurant
         {
@@ -52,19 +69,26 @@ public class RestaurantService(
             ClosingTime = dto.ClosingTime
         };
 
-        var updated = restaurantRepository.Update(restaurant)
-            ?? throw new KeyNotFoundException(
+        var updatedRestaurant =
+            await restaurantRepository.UpdateAsync(restaurant);
+
+        if (updatedRestaurant is null)
+        {
+            throw new KeyNotFoundException(
                 $"Ресторан с идентификатором {id} не найден");
+        }
 
-        return MapToDto(updated);
+        return MapToDto(updatedRestaurant);
     }
 
-    public bool Delete(int id)
+    /// <inheritdoc />
+    public async Task<bool> DeleteAsync(int id)
     {
-        return restaurantRepository.Delete(id);
+        return await restaurantRepository.DeleteAsync(id);
     }
 
-    private static RestaurantDto MapToDto(Restaurant restaurant)
+    private static RestaurantDto MapToDto(
+        Restaurant restaurant)
     {
         return new RestaurantDto(
             restaurant.Id,

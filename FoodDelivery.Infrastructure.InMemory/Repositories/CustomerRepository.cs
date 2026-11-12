@@ -1,4 +1,5 @@
-﻿using FoodDelivery.Domain.Data;
+﻿using FoodDelivery.Application.Interfaces;
+using FoodDelivery.Domain.Data;
 using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Infrastructure.InMemory.Repositories;
@@ -8,12 +9,12 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// </summary>
 public class CustomerRepository()
     : InMemoryRepository<Customer>(TestData.Customers),
-      FoodDelivery.Application.Interfaces.ICustomerRepository
+      ICustomerRepository
 {
     /// <inheritdoc />
-    public override Customer? Update(Customer customer)
+    public override async Task<Customer?> UpdateAsync(Customer customer)
     {
-        var existingCustomer = GetById(customer.Id);
+        var existingCustomer = await GetByIdAsync(customer.Id);
 
         if (existingCustomer is null)
         {

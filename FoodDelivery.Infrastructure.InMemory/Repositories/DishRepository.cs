@@ -12,9 +12,9 @@ public class DishRepository()
       IDishRepository
 {
     /// <inheritdoc />
-    public override Dish? Update(Dish dish)
+    public override async Task<Dish?> UpdateAsync(Dish dish)
     {
-        var existingDish = GetById(dish.Id);
+        var existingDish = await GetByIdAsync(dish.Id);
 
         if (existingDish is null)
         {

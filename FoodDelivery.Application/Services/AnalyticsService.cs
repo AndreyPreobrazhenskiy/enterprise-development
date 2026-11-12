@@ -7,23 +7,30 @@ namespace FoodDelivery.Application.Services;
 /// <summary>
 /// Предоставляет аналитическую информацию о заказах
 /// </summary>
-public class AnalyticsService(IOrderRepository orderRepository, ICategoryRepository categoryRepository) : IAnalyticsService
+public class AnalyticsService(
+    IOrderRepository orderRepository,
+    ICategoryRepository categoryRepository)
+    : IAnalyticsService
 {
     /// <inheritdoc />
-    public IList<CategoryOrderSummaryDto> GetOrdersByCategoryForPeriod(DateTime periodStart, DateTime periodEnd)
+    public async Task<IList<CategoryOrderSummaryDto>>
+        GetOrdersByCategoryForPeriodAsync(
+            DateTime periodStart,
+            DateTime periodEnd)
     {
         if (periodEnd <= periodStart)
         {
-            throw new ArgumentException("Дата окончания должна быть позже даты начала");
+            throw new ArgumentException(
+                "Дата окончания должна быть позже даты начала");
         }
 
-        var orders = orderRepository.GetAll()
+        var orders = (await orderRepository.GetAllAsync())
             .Where(order =>
                 order.CreatedAt >= periodStart &&
                 order.CreatedAt < periodEnd)
             .ToList();
 
-        var categories = categoryRepository.GetAll();
+        var categories = await categoryRepository.GetAllAsync();
 
         return orders
             .SelectMany(order => order.Items
@@ -35,11 +42,13 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
             .GroupBy(item => item.CategoryId)
             .Select(group =>
             {
-                var category = categories.FirstOrDefault(item => item.Id == group.Key);
+                var category = categories.FirstOrDefault(
+                    item => item.Id == group.Key);
 
                 if (category is null)
                 {
-                    throw new InvalidOperationException($"Категория с ID {group.Key} не найдена");
+                    throw new InvalidOperationException(
+                        $"Категория с ID {group.Key} не найдена");
                 }
 
                 var categoryOrders = group
@@ -54,15 +63,17 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
                     categoryOrders.Average(order => order.TotalAmount),
                     categoryOrders.Sum(order => order.TotalAmount));
             })
-
             .OrderBy(item => item.CategoryId)
             .ToList();
     }
 
     /// <inheritdoc />
-    public IList<CustomerOrderSummaryDto> GetCustomersByRestaurant(int restaurantId)
+    public async Task<IList<CustomerOrderSummaryDto>>
+        GetCustomersByRestaurantAsync(int restaurantId)
     {
-        return orderRepository.GetAll()
+        var orders = await orderRepository.GetAllAsync();
+
+        return orders
             .Where(order => order.RestaurantId == restaurantId)
             .Select(order => order.Customer)
             .DistinctBy(customer => customer.Id)
@@ -74,16 +85,19 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
                 customer.LastName,
                 customer.FirstName,
                 customer.Patronymic,
-                orderRepository.GetAll()
+                orders
                     .Where(order => order.CustomerId == customer.Id)
                     .Sum(order => order.TotalAmount)))
             .ToList();
     }
 
     /// <inheritdoc />
-    public CustomerOrderSummaryDto? GetCustomerWithMaxTotalOrderAmount()
+    public async Task<CustomerOrderSummaryDto?>
+        GetCustomerWithMaxTotalOrderAmountAsync()
     {
-        return orderRepository.GetAll()
+        var orders = await orderRepository.GetAllAsync();
+
+        return orders
             .GroupBy(order => order.CustomerId)
             .Select(group =>
             {
@@ -102,9 +116,10 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
     }
 
     /// <inheritdoc />
-    public IList<OrderDeliveryTimeDto> GetOrdersWithMinDeliveryTime()
+    public async Task<IList<OrderDeliveryTimeDto>>
+        GetOrdersWithMinDeliveryTimeAsync()
     {
-        var orders = orderRepository.GetAll().ToList();
+        var orders = await orderRepository.GetAllAsync();
 
         if (orders.Count == 0)
         {
@@ -116,7 +131,8 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
 
         return orders
             .Where(order =>
-                order.DeliveredAt - order.CreatedAt == minimumDeliveryTime)
+                order.DeliveredAt - order.CreatedAt ==
+                minimumDeliveryTime)
             .OrderBy(order => order.Id)
             .Select(order => new OrderDeliveryTimeDto(
                 order.Id,
@@ -125,7 +141,8 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
     }
 
     /// <inheritdoc />
-    public IList<RestaurantOrderCountDto> GetTopRestaurantsByOrderCount(int count)
+    public async Task<IList<RestaurantOrderCountDto>>
+        GetTopRestaurantsByOrderCountAsync(int count)
     {
         if (count <= 0)
         {
@@ -134,13 +151,18 @@ public class AnalyticsService(IOrderRepository orderRepository, ICategoryReposit
                 "Количество ресторанов должно быть положительным");
         }
 
-        return orderRepository.GetAll()
+        var orders = await orderRepository.GetAllAsync();
+
+        return orders
             .GroupBy(order => order.RestaurantId)
             .Select(group =>
             {
                 var restaurant = group.First().Restaurant;
 
-                return new RestaurantOrderCountDto(group.Key, restaurant.Name, group.Count());
+                return new RestaurantOrderCountDto(
+                    group.Key,
+                    restaurant.Name,
+                    group.Count());
             })
             .OrderByDescending(restaurant => restaurant.OrderCount)
             .ThenBy(restaurant => restaurant.RestaurantId)

@@ -6,14 +6,12 @@ using FoodDelivery.Domain.Entities;
 namespace FoodDelivery.Application.Services;
 
 /// <summary>
-/// Реализует прикладные операции над покупателями
+/// Реализует прикладные операции над покупателями.
 /// </summary>
-public class CustomerService(
-    ICustomerRepository customerRepository)
-    : ICustomerService
+public class CustomerService(ICustomerRepository customerRepository) : ICustomerService
 {
     /// <inheritdoc />
-    public CustomerDto Create(CustomerCreateUpdateDto dto)
+    public async Task<CustomerDto> CreateAsync(CustomerCreateUpdateDto dto)
     {
         var customer = new Customer
         {
@@ -25,29 +23,31 @@ public class CustomerService(
             DeliveryAddress = dto.DeliveryAddress
         };
 
-        var createdCustomer = customerRepository.Add(customer);
+        var createdCustomer = await customerRepository.AddAsync(customer);
 
         return MapToDto(createdCustomer);
     }
 
     /// <inheritdoc />
-    public CustomerDto? Get(int id)
+    public async Task<CustomerDto?> GetAsync(int id)
     {
-        var customer = customerRepository.GetById(id);
+        var customer = await customerRepository.GetByIdAsync(id);
 
         return customer is null ? null : MapToDto(customer);
     }
 
     /// <inheritdoc />
-    public IList<CustomerDto> GetAll()
+    public async Task<IList<CustomerDto>> GetAllAsync()
     {
-        return customerRepository.GetAll()
+        var customers = await customerRepository.GetAllAsync();
+
+        return customers
             .Select(MapToDto)
             .ToList();
     }
 
     /// <inheritdoc />
-    public CustomerDto Update(CustomerCreateUpdateDto dto, int id)
+    public async Task<CustomerDto> UpdateAsync(CustomerCreateUpdateDto dto, int id)
     {
         var customer = new Customer
         {
@@ -59,21 +59,20 @@ public class CustomerService(
             DeliveryAddress = dto.DeliveryAddress
         };
 
-        var updatedCustomer = customerRepository.Update(customer);
+        var updatedCustomer = await customerRepository.UpdateAsync(customer);
 
         if (updatedCustomer is null)
         {
-            throw new KeyNotFoundException(
-                $"Покупатель с идентификатором {id} не найден");
+            throw new KeyNotFoundException($"Покупатель с идентификатором {id} не найден");
         }
 
         return MapToDto(updatedCustomer);
     }
 
     /// <inheritdoc />
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        return customerRepository.Delete(id);
+        return await customerRepository.DeleteAsync(id);
     }
 
     private static CustomerDto MapToDto(Customer customer)

@@ -12,9 +12,11 @@ public class RestaurantRepository()
       IRestaurantRepository
 {
     /// <inheritdoc />
-    public override Restaurant? Update(Restaurant restaurant)
+    public override async Task<Restaurant?> UpdateAsync(
+        Restaurant restaurant)
     {
-        var existingRestaurant = GetById(restaurant.Id);
+        var existingRestaurant =
+            await GetByIdAsync(restaurant.Id);
 
         if (existingRestaurant is null)
         {

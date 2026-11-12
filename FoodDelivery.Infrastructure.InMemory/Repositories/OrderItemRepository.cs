@@ -12,9 +12,9 @@ public class OrderItemRepository()
       IOrderItemRepository
 {
     /// <inheritdoc />
-    public override OrderItem? Update(OrderItem orderItem)
+    public override async Task<OrderItem?> UpdateAsync(OrderItem orderItem)
     {
-        var existingOrderItem = GetById(orderItem.Id);
+        var existingOrderItem = await GetByIdAsync(orderItem.Id);
 
         if (existingOrderItem is null)
         {
