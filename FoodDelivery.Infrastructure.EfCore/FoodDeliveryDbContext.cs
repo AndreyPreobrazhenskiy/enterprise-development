@@ -128,6 +128,9 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
         {
             entity.HasKey(category => category.Id);
 
+            entity.Property(category => category.Id)
+                .ValueGeneratedOnAdd();
+
             entity.Property(category => category.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -139,6 +142,9 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
         modelBuilder.Entity<Customer>(entity =>
         {
             entity.HasKey(customer => customer.Id);
+
+            entity.Property(customer => customer.Id)
+                .ValueGeneratedOnAdd();
 
             entity.Property(customer => customer.LastName)
                 .IsRequired()
@@ -167,6 +173,9 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
         {
             entity.HasKey(restaurant => restaurant.Id);
 
+            entity.Property(restaurant => restaurant.Id)
+                .ValueGeneratedOnAdd();
+
             entity.Property(restaurant => restaurant.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -191,6 +200,9 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
         modelBuilder.Entity<Dish>(entity =>
         {
             entity.HasKey(dish => dish.Id);
+
+            entity.Property(dish => dish.Id)
+                .ValueGeneratedOnAdd();
 
             entity.Property(dish => dish.Name)
                 .IsRequired()
@@ -221,6 +233,9 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
         {
             entity.HasKey(order => order.Id);
 
+            entity.Property(order => order.Id)
+                .ValueGeneratedOnAdd();
+
             entity.HasOne(order => order.Customer)
                 .WithMany()
                 .HasForeignKey(order => order.CustomerId)
@@ -232,9 +247,11 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.Property(order => order.CreatedAt)
+                .HasColumnType("timestamp without time zone")
                 .IsRequired();
 
             entity.Property(order => order.DeliveredAt)
+                .HasColumnType("timestamp without time zone")
                 .IsRequired();
 
             entity.Ignore(order => order.TotalAmount);
@@ -251,6 +268,9 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
         modelBuilder.Entity<OrderItem>(entity =>
         {
             entity.HasKey(orderItem => orderItem.Id);
+
+            entity.Property(orderItem => orderItem.Id)
+                .ValueGeneratedOnAdd();
 
             entity.HasOne(orderItem => orderItem.Dish)
                 .WithMany()
