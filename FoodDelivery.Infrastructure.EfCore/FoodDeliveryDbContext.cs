@@ -1,4 +1,5 @@
-﻿using FoodDelivery.Domain.Entities;
+﻿using FoodDelivery.Domain.Data;
+using FoodDelivery.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodDelivery.Infrastructure.EfCore;
@@ -49,6 +50,76 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
         ConfigureDish(modelBuilder);
         ConfigureOrder(modelBuilder);
         ConfigureOrderItem(modelBuilder);
+
+        SeedData(modelBuilder);
+    }
+
+    private static void SeedData(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Category>().HasData(
+            TestData.Categories.Select(category => new
+            {
+                category.Id,
+                category.Name
+            })
+        );
+
+        modelBuilder.Entity<Customer>().HasData(
+            TestData.Customers.Select(customer => new
+            {
+                customer.Id,
+                customer.LastName,
+                customer.FirstName,
+                customer.Patronymic,
+                customer.Phone,
+                customer.DeliveryAddress
+            })
+        );
+
+        modelBuilder.Entity<Restaurant>().HasData(
+            TestData.Restaurants.Select(restaurant => new
+            {
+                restaurant.Id,
+                restaurant.Name,
+                restaurant.Address,
+                restaurant.Rating,
+                restaurant.OpeningTime,
+                restaurant.ClosingTime
+            })
+        );
+
+        modelBuilder.Entity<Dish>().HasData(
+            TestData.Dishes.Select(dish => new
+            {
+                dish.Id,
+                dish.Name,
+                dish.WeightGrams,
+                dish.Price,
+                dish.CategoryId,
+                dish.RestaurantId
+            })
+        );
+
+        modelBuilder.Entity<Order>().HasData(
+            TestData.Orders.Select(order => new
+            {
+                order.Id,
+                order.CustomerId,
+                order.RestaurantId,
+                order.CreatedAt,
+                order.DeliveredAt
+            })
+        );
+
+        modelBuilder.Entity<OrderItem>().HasData(
+            TestData.OrderItems.Select(orderItem => new
+            {
+                orderItem.Id,
+                orderItem.OrderId,
+                orderItem.DishId,
+                orderItem.Quantity
+            })
+        );
     }
 
     private static void ConfigureCategory(ModelBuilder modelBuilder)
