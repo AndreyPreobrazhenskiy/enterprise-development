@@ -1,6 +1,5 @@
 ﻿using FoodDelivery.Application.Contracts.DTOs;
 using FoodDelivery.Application.Contracts.Interfaces;
-using FoodDelivery.Application.Interfaces;
 using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Application.Services;

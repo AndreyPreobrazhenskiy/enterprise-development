@@ -1,6 +1,5 @@
 ﻿using FoodDelivery.Application.Contracts.DTOs;
 using FoodDelivery.Application.Contracts.Interfaces;
-using FoodDelivery.Application.Interfaces;
 using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Application.Services;
@@ -95,6 +94,16 @@ public class OrderService(
     public async Task<bool> DeleteAsync(int id)
     {
         return await orderRepository.DeleteAsync(id);
+    }
+
+    /// <inheritdoc />
+    public async Task<IList<OrderDto>> GetNotDeliveredAsync()
+    {
+        var orders = await orderRepository.GetNotDeliveredAsync();
+
+        return orders
+            .Select(MapToDto)
+            .ToList();
     }
 
     private static OrderDto MapToDto(Order order)

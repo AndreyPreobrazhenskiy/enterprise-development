@@ -15,7 +15,7 @@ public record OrderDto(
     int CustomerId,
     int RestaurantId,
     DateTime CreatedAt,
-    DateTime DeliveredAt,
+    DateTime? DeliveredAt,
     decimal TotalAmount,
     List<OrderItemDto> Items
 );

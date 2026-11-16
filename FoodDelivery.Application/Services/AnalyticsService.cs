@@ -1,6 +1,5 @@
 ﻿using FoodDelivery.Application.Contracts.DTOs.Analytics;
 using FoodDelivery.Application.Contracts.Interfaces;
-using FoodDelivery.Application.Interfaces;
 
 namespace FoodDelivery.Application.Services;
 
@@ -121,22 +120,25 @@ public class AnalyticsService(
     {
         var orders = await orderRepository.GetAllAsync();
 
-        if (orders.Count == 0)
+        var deliveredOrders = orders
+            .Where(order => order.DeliveredAt.HasValue)
+            .ToList();
+
+        if (deliveredOrders.Count == 0)
         {
             return [];
         }
 
-        var minimumDeliveryTime = orders
-            .Min(order => order.DeliveredAt - order.CreatedAt);
+        var minimumDeliveryTime = deliveredOrders
+            .Min(order => order.DeliveredAt!.Value - order.CreatedAt);
 
-        return orders
+        return deliveredOrders
             .Where(order =>
-                order.DeliveredAt - order.CreatedAt ==
-                minimumDeliveryTime)
+                order.DeliveredAt!.Value - order.CreatedAt == minimumDeliveryTime)
             .OrderBy(order => order.Id)
             .Select(order => new OrderDeliveryTimeDto(
                 order.Id,
-                order.DeliveredAt - order.CreatedAt))
+                order.DeliveredAt!.Value - order.CreatedAt))
             .ToList();
     }
 
@@ -146,9 +148,7 @@ public class AnalyticsService(
     {
         if (count <= 0)
         {
-            throw new ArgumentOutOfRangeException(
-                nameof(count),
-                "Количество ресторанов должно быть положительным");
+            throw new ArgumentOutOfRangeException(nameof(count), "Количество ресторанов должно быть положительным");
         }
 
         var orders = await orderRepository.GetAllAsync();

@@ -39,246 +39,37 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
     /// </summary>
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
-    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        ConfigureCategory(modelBuilder);
-        ConfigureCustomer(modelBuilder);
-        ConfigureRestaurant(modelBuilder);
-        ConfigureDish(modelBuilder);
-        ConfigureOrder(modelBuilder);
-        ConfigureOrderItem(modelBuilder);
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.HasOne(e => e.Customer).WithMany().HasForeignKey(e => e.CustomerId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.Restaurant).WithMany().HasForeignKey(e => e.RestaurantId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(e => e.Items).WithOne().HasForeignKey(oi => oi.OrderId).OnDelete(DeleteBehavior.Cascade);
+            entity.Property(e => e.CreatedAt).HasColumnType("timestamp without time zone");
+            entity.Property(e => e.DeliveredAt).HasColumnType("timestamp without time zone");
+            entity.Ignore(e => e.TotalAmount);
+        });
+
+        modelBuilder.Entity<Dish>(entity =>
+        {
+            entity.HasOne(e => e.Category).WithMany().HasForeignKey(e => e.CategoryId).OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.Restaurant).WithMany(r => r.Dishes).HasForeignKey(e => e.RestaurantId).OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.Price).HasPrecision(18, 2);
+        });
 
         SeedData(modelBuilder);
     }
 
     private static void SeedData(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Category>().HasData(
-            TestData.Categories.Select(category => new
-            {
-                category.Id,
-                category.Name
-            })
-        );
-
-        modelBuilder.Entity<Customer>().HasData(
-            TestData.Customers.Select(customer => new
-            {
-                customer.Id,
-                customer.LastName,
-                customer.FirstName,
-                customer.Patronymic,
-                customer.Phone,
-                customer.DeliveryAddress
-            })
-        );
-
-        modelBuilder.Entity<Restaurant>().HasData(
-            TestData.Restaurants.Select(restaurant => new
-            {
-                restaurant.Id,
-                restaurant.Name,
-                restaurant.Address,
-                restaurant.Rating,
-                restaurant.OpeningTime,
-                restaurant.ClosingTime
-            })
-        );
-
-        modelBuilder.Entity<Dish>().HasData(
-            TestData.Dishes.Select(dish => new
-            {
-                dish.Id,
-                dish.Name,
-                dish.WeightGrams,
-                dish.Price,
-                dish.CategoryId,
-                dish.RestaurantId
-            })
-        );
-
-        modelBuilder.Entity<Order>().HasData(
-            TestData.Orders.Select(order => new
-            {
-                order.Id,
-                order.CustomerId,
-                order.RestaurantId,
-                order.CreatedAt,
-                order.DeliveredAt
-            })
-        );
-
-        modelBuilder.Entity<OrderItem>().HasData(
-            TestData.OrderItems.Select(orderItem => new
-            {
-                orderItem.Id,
-                orderItem.OrderId,
-                orderItem.DishId,
-                orderItem.Quantity
-            })
-        );
-    }
-
-    private static void ConfigureCategory(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Category>(entity =>
-        {
-            entity.HasKey(category => category.Id);
-
-            entity.Property(category => category.Id)
-                .ValueGeneratedOnAdd();
-
-            entity.Property(category => category.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-        });
-    }
-
-    private static void ConfigureCustomer(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Customer>(entity =>
-        {
-            entity.HasKey(customer => customer.Id);
-
-            entity.Property(customer => customer.Id)
-                .ValueGeneratedOnAdd();
-
-            entity.Property(customer => customer.LastName)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            entity.Property(customer => customer.FirstName)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            entity.Property(customer => customer.Patronymic)
-                .HasMaxLength(100);
-
-            entity.Property(customer => customer.Phone)
-                .IsRequired()
-                .HasMaxLength(20);
-
-            entity.Property(customer => customer.DeliveryAddress)
-                .IsRequired()
-                .HasMaxLength(250);
-        });
-    }
-
-    private static void ConfigureRestaurant(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Restaurant>(entity =>
-        {
-            entity.HasKey(restaurant => restaurant.Id);
-
-            entity.Property(restaurant => restaurant.Id)
-                .ValueGeneratedOnAdd();
-
-            entity.Property(restaurant => restaurant.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            entity.Property(restaurant => restaurant.Address)
-                .IsRequired()
-                .HasMaxLength(250);
-
-            entity.Property(restaurant => restaurant.Rating)
-                .IsRequired();
-
-            entity.Property(restaurant => restaurant.OpeningTime)
-                .IsRequired();
-
-            entity.Property(restaurant => restaurant.ClosingTime)
-                .IsRequired();
-        });
-    }
-
-    private static void ConfigureDish(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Dish>(entity =>
-        {
-            entity.HasKey(dish => dish.Id);
-
-            entity.Property(dish => dish.Id)
-                .ValueGeneratedOnAdd();
-
-            entity.Property(dish => dish.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            entity.Property(dish => dish.WeightGrams)
-                .IsRequired();
-
-            entity.Property(dish => dish.Price)
-                .HasPrecision(18, 2)
-                .IsRequired();
-
-            entity.HasOne(dish => dish.Category)
-                .WithMany()
-                .HasForeignKey(dish => dish.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(dish => dish.Restaurant)
-                .WithMany(restaurant => restaurant.Dishes)
-                .HasForeignKey(dish => dish.RestaurantId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
-    }
-
-    private static void ConfigureOrder(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Order>(entity =>
-        {
-            entity.HasKey(order => order.Id);
-
-            entity.Property(order => order.Id)
-                .ValueGeneratedOnAdd();
-
-            entity.HasOne(order => order.Customer)
-                .WithMany()
-                .HasForeignKey(order => order.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(order => order.Restaurant)
-                .WithMany()
-                .HasForeignKey(order => order.RestaurantId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.Property(order => order.CreatedAt)
-                .HasColumnType("timestamp without time zone")
-                .IsRequired();
-
-            entity.Property(order => order.DeliveredAt)
-                .HasColumnType("timestamp without time zone")
-                .IsRequired();
-
-            entity.Ignore(order => order.TotalAmount);
-
-            entity.HasMany(order => order.Items)
-                .WithOne()
-                .HasForeignKey(orderItem => orderItem.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-    }
-
-    private static void ConfigureOrderItem(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<OrderItem>(entity =>
-        {
-            entity.HasKey(orderItem => orderItem.Id);
-
-            entity.Property(orderItem => orderItem.Id)
-                .ValueGeneratedOnAdd();
-
-            entity.HasOne(orderItem => orderItem.Dish)
-                .WithMany()
-                .HasForeignKey(orderItem => orderItem.DishId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            entity.Property(orderItem => orderItem.Quantity)
-                .IsRequired();
-        });
+        modelBuilder.Entity<Category>().HasData(TestData.Categories.Select(c => new { c.Id, c.Name }));
+        modelBuilder.Entity<Customer>().HasData(TestData.Customers.Select(c => new { c.Id, c.LastName, c.FirstName, c.Patronymic, c.Phone, c.DeliveryAddress }));
+        modelBuilder.Entity<Restaurant>().HasData(TestData.Restaurants.Select(r => new { r.Id, r.Name, r.Address, r.Rating, r.OpeningTime, r.ClosingTime }));
+        modelBuilder.Entity<Dish>().HasData(TestData.Dishes.Select(d => new { d.Id, d.Name, d.WeightGrams, d.Price, d.CategoryId, d.RestaurantId }));
+        modelBuilder.Entity<Order>().HasData(TestData.Orders.Select(o => new { o.Id, o.CustomerId, o.RestaurantId, o.CreatedAt, o.DeliveredAt }));
+        modelBuilder.Entity<OrderItem>().HasData(TestData.OrderItems.Select(oi => new { oi.Id, oi.OrderId, oi.DishId, oi.Quantity }));
     }
 }

@@ -1,4 +1,4 @@
-﻿using FoodDelivery.Application.Interfaces;
+﻿using FoodDelivery.Application.Contracts.Interfaces;
 using FoodDelivery.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,12 +67,17 @@ public class OrderRepository(FoodDeliveryDbContext dbContext)
             return false;
         }
 
-        DbContext.OrderItems.RemoveRange(order.Items);
-
         DbContext.Orders.Remove(order);
-
         await DbContext.SaveChangesAsync();
-
         return true;
+    }
+
+    /// <inheritdoc />
+    public async Task<IList<Order>> GetNotDeliveredAsync()
+    {
+        return await DbContext.Orders
+            .Include(order => order.Items)
+            .Where(order => order.DeliveredAt == null)
+            .ToListAsync();
     }
 }

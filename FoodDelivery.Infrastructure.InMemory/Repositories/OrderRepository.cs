@@ -1,4 +1,4 @@
-﻿using FoodDelivery.Application.Interfaces;
+﻿using FoodDelivery.Application.Contracts.Interfaces;
 using FoodDelivery.Domain.Data;
 using FoodDelivery.Domain.Entities;
 
@@ -54,4 +54,14 @@ public class OrderRepository()
 
         return await base.DeleteAsync(id);
     }
+
+	/// <inheritdoc />
+	public Task<IList<Order>> GetNotDeliveredAsync()
+	{
+		var notDeliveredOrders = TestData.Orders
+			.Where(order => order.DeliveredAt == null)
+			.ToList();
+
+		return Task.FromResult<IList<Order>>(notDeliveredOrders);
+	}
 }

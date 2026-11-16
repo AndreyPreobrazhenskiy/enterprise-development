@@ -2,8 +2,14 @@ using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Domain.Data;
 
+/// <summary>
+/// Предоставляет сид дату для инициализации базы данных
+/// </summary>
 public static class TestData
 {
+    /// <summary>
+    /// Коллекция тестовых категорий блюд
+    /// </summary>
     public static List<Category> Categories { get; } = new()
     {
         new Category
@@ -67,6 +73,9 @@ public static class TestData
         }
     };
 
+    /// <summary>
+    /// Коллекция тестовых ресторанов с указанием адреса, рейтинга и времени работы
+    /// </summary>
     public static List<Restaurant> Restaurants { get; } = new()
     {
         new Restaurant
@@ -170,6 +179,9 @@ public static class TestData
         }
     };
 
+    /// <summary>
+    /// Коллекция тестовых клиентов с контактными данными и адресом доставки
+    /// </summary>
     public static List<Customer> Customers { get; } = new()
     {
         new Customer
@@ -273,6 +285,9 @@ public static class TestData
         }
     };
 
+    /// <summary>
+    /// Коллекция тестовых блюд с указанием веса, цены, категории и привязкой к ресторану
+    /// </summary>
     public static List<Dish> Dishes { get; } = new()
     {
         new Dish
@@ -420,6 +435,9 @@ public static class TestData
         }
     };
 
+    /// <summary>
+    /// Коллекция тестовых заказов, связывающих клиентов и рестораны с указанием времени создания и доставки
+    /// </summary>
     public static List<Order> Orders { get; } = new()
     {
         new Order
@@ -584,10 +602,13 @@ public static class TestData
             RestaurantId = 8,
             Restaurant = Restaurants[7],
             CreatedAt = new DateTime(2026, 9, 15, 16, 0, 0),
-            DeliveredAt = new DateTime(2026, 9, 15, 16, 40, 0),
+            DeliveredAt = null,
         }
     };
 
+    /// <summary>
+    /// Коллекция тестовых позиций заказов, указывающих количество конкретного блюда в заказе
+    /// </summary>
     public static List<OrderItem> OrderItems { get; } = new()
     {
         new OrderItem
@@ -762,7 +783,9 @@ public static class TestData
         }
     };
 
-    // связка orderitems с orders
+    /// <summary>
+    /// Статический конструктор (связка блюда с соответствующими ресторанами и позиции заказов с самими заказами)
+    /// </summary>
     static TestData()
     {
         foreach (var restaurant in Restaurants)

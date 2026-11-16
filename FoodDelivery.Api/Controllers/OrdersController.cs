@@ -46,6 +46,32 @@ public class OrdersController(
     }
 
     /// <summary>
+    /// Возвращает список заказов, которые ещё не были доставлены (активные заказы)
+    /// </summary>
+    [HttpGet("not-delivered")]
+    [ProducesResponseType(typeof(IList<OrderDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<IList<OrderDto>>> GetNotDelivered()
+    {
+        try
+        {
+            logger.LogInformation("Получен запрос на получение недоставленных заказов");
+
+            var orders = await orderService.GetNotDeliveredAsync();
+
+            return Ok(orders);
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(exception, "Ошибка при получении списка недоставленных заказов");
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { message = "Внутренняя ошибка сервера" });
+        }
+    }
+
+    /// <summary>
     /// Возвращает заказ по идентификатору
     /// </summary>
     [HttpGet("{id:int}")]

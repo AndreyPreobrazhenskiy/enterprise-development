@@ -38,7 +38,7 @@ public class Order : IEntity
     /// <summary>
     /// Дата и время доставки заказа
     /// </summary>
-    public required DateTime DeliveredAt { get; set; }
+    public DateTime? DeliveredAt { get; set; }
 
     /// <summary>
     /// Итоговая сумма заказа в рублях

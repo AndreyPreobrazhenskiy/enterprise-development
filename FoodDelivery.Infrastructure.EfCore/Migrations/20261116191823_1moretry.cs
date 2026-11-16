@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FoodDelivery.Infrastructure.EfCore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class _1moretry : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,11 +33,11 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    Phone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DeliveryAddress = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false)
+                    LastName = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    Patronymic = table.Column<string>(type: "text", nullable: true),
+                    Phone = table.Column<string>(type: "text", nullable: false),
+                    DeliveryAddress = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,8 +50,8 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Address = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
                     Rating = table.Column<double>(type: "double precision", nullable: false),
                     OpeningTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
                     ClosingTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
@@ -67,7 +67,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     WeightGrams = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
@@ -98,8 +98,8 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
                     RestaurantId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    DeliveredAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeliveredAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -136,7 +136,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                         column: x => x.DishId,
                         principalTable: "Dishes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
@@ -220,21 +220,21 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 columns: new[] { "Id", "CreatedAt", "CustomerId", "DeliveredAt", "RestaurantId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2026, 9, 1, 12, 35, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 2, new DateTime(2026, 9, 2, 13, 0, 0, 0, DateTimeKind.Unspecified), 2, new DateTime(2026, 9, 2, 13, 50, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 3, new DateTime(2026, 9, 3, 14, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2026, 9, 3, 14, 25, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 4, new DateTime(2026, 9, 4, 15, 0, 0, 0, DateTimeKind.Unspecified), 4, new DateTime(2026, 9, 4, 15, 45, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 5, new DateTime(2026, 9, 5, 16, 0, 0, 0, DateTimeKind.Unspecified), 5, new DateTime(2026, 9, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 6, new DateTime(2026, 9, 6, 17, 0, 0, 0, DateTimeKind.Unspecified), 6, new DateTime(2026, 9, 6, 17, 40, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 7, new DateTime(2026, 9, 7, 18, 0, 0, 0, DateTimeKind.Unspecified), 7, new DateTime(2026, 9, 7, 18, 20, 0, 0, DateTimeKind.Unspecified), 4 },
-                    { 8, new DateTime(2026, 9, 8, 19, 45, 0, 0, DateTimeKind.Unspecified), 8, new DateTime(2026, 9, 8, 19, 55, 0, 0, DateTimeKind.Unspecified), 5 },
-                    { 9, new DateTime(2026, 9, 9, 10, 0, 0, 0, DateTimeKind.Unspecified), 9, new DateTime(2026, 9, 9, 10, 10, 0, 0, DateTimeKind.Unspecified), 8 },
-                    { 10, new DateTime(2026, 9, 10, 11, 0, 0, 0, DateTimeKind.Unspecified), 10, new DateTime(2026, 9, 10, 11, 30, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 11, new DateTime(2026, 9, 11, 12, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2026, 9, 11, 12, 25, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 12, new DateTime(2026, 9, 12, 13, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2026, 9, 12, 13, 30, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 13, new DateTime(2026, 9, 13, 14, 0, 0, 0, DateTimeKind.Unspecified), 4, new DateTime(2026, 9, 13, 14, 20, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 14, new DateTime(2026, 9, 14, 15, 0, 0, 0, DateTimeKind.Unspecified), 5, new DateTime(2026, 9, 14, 15, 35, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 15, new DateTime(2026, 9, 15, 16, 0, 0, 0, DateTimeKind.Unspecified), 6, new DateTime(2026, 9, 15, 16, 40, 0, 0, DateTimeKind.Unspecified), 8 }
+                    { 1, new DateTime(2026, 9, 1, 12, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2026, 9, 1, 12, 35, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, new DateTime(2026, 9, 2, 13, 0, 0, 0, DateTimeKind.Utc), 2, new DateTime(2026, 9, 2, 13, 50, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 3, new DateTime(2026, 9, 3, 14, 0, 0, 0, DateTimeKind.Utc), 3, new DateTime(2026, 9, 3, 14, 25, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 4, new DateTime(2026, 9, 4, 15, 0, 0, 0, DateTimeKind.Utc), 4, new DateTime(2026, 9, 4, 15, 45, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 5, new DateTime(2026, 9, 5, 16, 0, 0, 0, DateTimeKind.Utc), 5, new DateTime(2026, 9, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 6, new DateTime(2026, 9, 6, 17, 0, 0, 0, DateTimeKind.Utc), 6, new DateTime(2026, 9, 6, 17, 40, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 7, new DateTime(2026, 9, 7, 18, 0, 0, 0, DateTimeKind.Utc), 7, new DateTime(2026, 9, 7, 18, 20, 0, 0, DateTimeKind.Unspecified), 4 },
+                    { 8, new DateTime(2026, 9, 8, 19, 45, 0, 0, DateTimeKind.Utc), 8, new DateTime(2026, 9, 8, 19, 55, 0, 0, DateTimeKind.Unspecified), 5 },
+                    { 9, new DateTime(2026, 9, 9, 10, 0, 0, 0, DateTimeKind.Utc), 9, new DateTime(2026, 9, 9, 10, 10, 0, 0, DateTimeKind.Unspecified), 8 },
+                    { 10, new DateTime(2026, 9, 10, 11, 0, 0, 0, DateTimeKind.Utc), 10, new DateTime(2026, 9, 10, 11, 30, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 11, new DateTime(2026, 9, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2026, 9, 11, 12, 25, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 12, new DateTime(2026, 9, 12, 13, 0, 0, 0, DateTimeKind.Utc), 3, new DateTime(2026, 9, 12, 13, 30, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 13, new DateTime(2026, 9, 13, 14, 0, 0, 0, DateTimeKind.Utc), 4, new DateTime(2026, 9, 13, 14, 20, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 14, new DateTime(2026, 9, 14, 15, 0, 0, 0, DateTimeKind.Utc), 5, new DateTime(2026, 9, 14, 15, 35, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 15, new DateTime(2026, 9, 15, 16, 0, 0, 0, DateTimeKind.Utc), 6, null, 8 }
                 });
 
             migrationBuilder.InsertData(

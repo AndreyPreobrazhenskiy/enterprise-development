@@ -1,4 +1,4 @@
-﻿namespace FoodDelivery.Application.Interfaces;
+﻿namespace FoodDelivery.Application.Contracts.Interfaces;
 
 /// <summary>
 /// Определяет базовые операции доступа к данным

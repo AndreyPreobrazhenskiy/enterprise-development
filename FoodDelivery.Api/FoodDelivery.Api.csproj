@@ -5,7 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,11 +12,13 @@
     <ProjectReference Include="..\FoodDelivery.Application\FoodDelivery.Application.csproj" />
     <ProjectReference Include="..\FoodDelivery.Infrastructure.EfCore\FoodDelivery.Infrastructure.EfCore.csproj" />
     <ProjectReference Include="..\FoodDelivery.Infrastructure.InMemory\FoodDelivery.Infrastructure.InMemory.csproj" />
+    <ProjectReference Include="..\FoodDelivery.ServiceDefaults\FoodDelivery.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4">
+	<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

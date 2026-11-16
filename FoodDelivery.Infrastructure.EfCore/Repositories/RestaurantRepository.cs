@@ -1,4 +1,4 @@
-﻿using FoodDelivery.Application.Interfaces;
+﻿using FoodDelivery.Application.Contracts.Interfaces;
 using FoodDelivery.Domain.Entities;
 
 namespace FoodDelivery.Infrastructure.EfCore.Repositories;

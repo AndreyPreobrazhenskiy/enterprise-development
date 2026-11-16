@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FoodDelivery.Infrastructure.EfCore.Migrations
 {
     [DbContext(typeof(FoodDeliveryDbContext))]
-    [Migration("20261112151529_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261116194914_fixordertime")]
+    partial class fixordertime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.4")
+                .HasAnnotation("ProductVersion", "10.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -35,8 +35,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -105,27 +104,22 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
 
                     b.Property<string>("DeliveryAddress")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Patronymic")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -235,8 +229,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
@@ -381,7 +374,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("DeliveredAt")
+                    b.Property<DateTime?>("DeliveredAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("RestaurantId")
@@ -513,7 +506,6 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                             Id = 15,
                             CreatedAt = new DateTime(2026, 9, 15, 16, 0, 0, 0, DateTimeKind.Unspecified),
                             CustomerId = 6,
-                            DeliveredAt = new DateTime(2026, 9, 15, 16, 40, 0, 0, DateTimeKind.Unspecified),
                             RestaurantId = 8
                         });
                 });
@@ -689,16 +681,14 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
+                        .HasColumnType("text");
 
                     b.Property<TimeOnly>("ClosingTime")
                         .HasColumnType("time without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<TimeOnly>("OpeningTime")
                         .HasColumnType("time without time zone");
@@ -846,7 +836,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                     b.HasOne("FoodDelivery.Domain.Entities.Dish", "Dish")
                         .WithMany()
                         .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FoodDelivery.Domain.Entities.Order", null)

@@ -20,7 +20,5 @@ public record OrderCreateUpdateDto(
     [Range(typeof(DateTime), "01/01/2000", "12/31/9999", ParseLimitsInInvariantCulture = true, ErrorMessage = "Укажите корректную дату создания заказа")]
     DateTime CreatedAt,
 
-    [Required(ErrorMessage = "Дата доставки обязательна")]
-    [Range(typeof(DateTime), "01/01/2000", "12/31/9999", ParseLimitsInInvariantCulture = true, ErrorMessage = "Укажите корректную дату доставки")]
-    DateTime DeliveredAt
+    DateTime? DeliveredAt
 );
