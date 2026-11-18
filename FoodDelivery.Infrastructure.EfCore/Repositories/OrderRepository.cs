@@ -1,4 +1,4 @@
-﻿using FoodDelivery.Application.Contracts.Interfaces;
+﻿using FoodDelivery.Domain.Repositories;
 using FoodDelivery.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -76,7 +76,10 @@ public class OrderRepository(FoodDeliveryDbContext dbContext)
     public async Task<IList<Order>> GetNotDeliveredAsync()
     {
         return await DbContext.Orders
+            .Include(order => order.Customer)
+            .Include(order => order.Restaurant)
             .Include(order => order.Items)
+                .ThenInclude(item => item.Dish)
             .Where(order => order.DeliveredAt == null)
             .ToListAsync();
     }

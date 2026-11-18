@@ -1,6 +1,7 @@
 ﻿using FoodDelivery.Application.Contracts.DTOs;
 using FoodDelivery.Application.Contracts.Interfaces;
 using FoodDelivery.Domain.Entities;
+using FoodDelivery.Domain.Repositories;
 
 namespace FoodDelivery.Application.Services;
 

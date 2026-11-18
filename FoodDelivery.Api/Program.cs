@@ -1,5 +1,6 @@
 ﻿using FoodDelivery.Application.Contracts.Interfaces;
 using FoodDelivery.Application.Services;
+using FoodDelivery.Domain.Repositories;
 using FoodDelivery.Infrastructure.EfCore;
 using FoodDelivery.Infrastructure.EfCore.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,8 @@ builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

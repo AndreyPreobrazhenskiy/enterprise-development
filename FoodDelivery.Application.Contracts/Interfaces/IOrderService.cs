@@ -2,6 +2,9 @@
 
 namespace FoodDelivery.Application.Contracts.Interfaces;
 
+/// <summary>
+/// Прикладной сервис для работы с заказами
+/// </summary>
 public interface IOrderService
     : IApplicationService<OrderDto, OrderCreateUpdateDto, int>
 {

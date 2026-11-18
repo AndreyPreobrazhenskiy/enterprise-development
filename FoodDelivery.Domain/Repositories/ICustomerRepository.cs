@@ -1,6 +1,6 @@
 ﻿using FoodDelivery.Domain.Entities;
 
-namespace FoodDelivery.Application.Contracts.Interfaces;
+namespace FoodDelivery.Domain.Repositories;
 
 /// <summary>
 /// Определяет операции доступа к данным покупателей

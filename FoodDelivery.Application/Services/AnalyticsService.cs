@@ -1,5 +1,6 @@
 ﻿using FoodDelivery.Application.Contracts.DTOs.Analytics;
 using FoodDelivery.Application.Contracts.Interfaces;
+using FoodDelivery.Domain.Repositories;
 
 namespace FoodDelivery.Application.Services;
 

@@ -17,7 +17,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -26,17 +26,20 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("categories", (string)null);
 
                     b.HasData(
                         new
@@ -95,32 +98,43 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DeliveryAddress")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("delivery_address");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("last_name");
 
                     b.Property<string>("Patronymic")
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("patronymic");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("phone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("customers", (string)null);
 
                     b.HasData(
                         new
@@ -217,26 +231,33 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("numeric(18,2)");
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("price");
 
                     b.Property<int>("RestaurantId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("restaurant_id");
 
                     b.Property<int>("WeightGrams")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("weight_grams");
 
                     b.HasKey("Id");
 
@@ -244,7 +265,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Dishes");
+                    b.ToTable("dishes", (string)null);
 
                     b.HasData(
                         new
@@ -361,21 +382,26 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("customer_id");
 
                     b.Property<DateTime?>("DeliveredAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("delivered_at");
 
                     b.Property<int>("RestaurantId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("restaurant_id");
 
                     b.HasKey("Id");
 
@@ -383,7 +409,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("orders", (string)null);
 
                     b.HasData(
                         new
@@ -511,18 +537,22 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DishId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("dish_id");
 
                     b.Property<int>("OrderId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("order_id");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
 
                     b.HasKey("Id");
 
@@ -530,7 +560,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("order_items", (string)null);
 
                     b.HasData(
                         new
@@ -672,30 +702,38 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(250)
+                        .HasColumnType("character varying(250)")
+                        .HasColumnName("address");
 
                     b.Property<TimeOnly>("ClosingTime")
-                        .HasColumnType("time without time zone");
+                        .HasColumnType("time without time zone")
+                        .HasColumnName("closing_time");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
                     b.Property<TimeOnly>("OpeningTime")
-                        .HasColumnType("time without time zone");
+                        .HasColumnType("time without time zone")
+                        .HasColumnName("opening_time");
 
                     b.Property<double>("Rating")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("rating");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Restaurants");
+                    b.ToTable("restaurants", (string)null);
 
                     b.HasData(
                         new
@@ -833,7 +871,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                     b.HasOne("FoodDelivery.Domain.Entities.Dish", "Dish")
                         .WithMany()
                         .HasForeignKey("DishId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FoodDelivery.Domain.Entities.Order", null)

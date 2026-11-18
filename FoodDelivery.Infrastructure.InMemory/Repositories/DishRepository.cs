@@ -1,4 +1,4 @@
-﻿using FoodDelivery.Application.Contracts.Interfaces;
+﻿using FoodDelivery.Domain.Repositories;
 using FoodDelivery.Domain.Data;
 using FoodDelivery.Domain.Entities;
 

@@ -9,145 +9,145 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FoodDelivery.Infrastructure.EfCore.Migrations
 {
     /// <inheritdoc />
-    public partial class _1moretry : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_categories", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    Patronymic = table.Column<string>(type: "text", nullable: true),
-                    Phone = table.Column<string>(type: "text", nullable: false),
-                    DeliveryAddress = table.Column<string>(type: "text", nullable: false)
+                    last_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    first_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    patronymic = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    phone = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    delivery_address = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_customers", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Restaurants",
+                name: "restaurants",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    Rating = table.Column<double>(type: "double precision", nullable: false),
-                    OpeningTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    ClosingTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    address = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
+                    rating = table.Column<double>(type: "double precision", nullable: false),
+                    opening_time = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    closing_time = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Restaurants", x => x.Id);
+                    table.PrimaryKey("PK_restaurants", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Dishes",
+                name: "dishes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    WeightGrams = table.Column<int>(type: "integer", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
-                    RestaurantId = table.Column<int>(type: "integer", nullable: false)
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    weight_grams = table.Column<int>(type: "integer", nullable: false),
+                    price = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    category_id = table.Column<int>(type: "integer", nullable: false),
+                    restaurant_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dishes", x => x.Id);
+                    table.PrimaryKey("PK_dishes", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Dishes_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
+                        name: "FK_dishes_categories_category_id",
+                        column: x => x.category_id,
+                        principalTable: "categories",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Dishes_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CustomerId = table.Column<int>(type: "integer", nullable: false),
-                    RestaurantId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeliveredAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Orders_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurants",
-                        principalColumn: "Id",
+                        name: "FK_dishes_restaurants_restaurant_id",
+                        column: x => x.restaurant_id,
+                        principalTable: "restaurants",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItems",
+                name: "orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
-                    DishId = table.Column<int>(type: "integer", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false)
+                    customer_id = table.Column<int>(type: "integer", nullable: false),
+                    restaurant_id = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    delivered_at = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.PrimaryKey("PK_orders", x => x.id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Dishes_DishId",
-                        column: x => x.DishId,
-                        principalTable: "Dishes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_orders_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
+                        name: "FK_orders_restaurants_restaurant_id",
+                        column: x => x.restaurant_id,
+                        principalTable: "restaurants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "order_items",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    order_id = table.Column<int>(type: "integer", nullable: false),
+                    dish_id = table.Column<int>(type: "integer", nullable: false),
+                    quantity = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_order_items", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_order_items_dishes_dish_id",
+                        column: x => x.dish_id,
+                        principalTable: "dishes",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_order_items_orders_order_id",
+                        column: x => x.order_id,
+                        principalTable: "orders",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "Id", "Name" },
+                table: "categories",
+                columns: new[] { "id", "name" },
                 values: new object[,]
                 {
                     { 1, "Пицца" },
@@ -163,8 +163,8 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Customers",
-                columns: new[] { "Id", "DeliveryAddress", "FirstName", "LastName", "Patronymic", "Phone" },
+                table: "customers",
+                columns: new[] { "id", "delivery_address", "first_name", "last_name", "patronymic", "phone" },
                 values: new object[,]
                 {
                     { 1, "Самара, ул. Ленина, д. 1", "Илья", "Мэдисон", "Сергеевич", "+79270000228" },
@@ -180,8 +180,8 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Restaurants",
-                columns: new[] { "Id", "Address", "ClosingTime", "Name", "OpeningTime", "Rating" },
+                table: "restaurants",
+                columns: new[] { "id", "address", "closing_time", "name", "opening_time", "rating" },
                 values: new object[,]
                 {
                     { 1, "просп. Ленина, 1", new TimeOnly(23, 0, 0), "Додо Пицца", new TimeOnly(10, 0, 0), 4.7999999999999998 },
@@ -197,8 +197,8 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Dishes",
-                columns: new[] { "Id", "CategoryId", "Name", "Price", "RestaurantId", "WeightGrams" },
+                table: "dishes",
+                columns: new[] { "id", "category_id", "name", "price", "restaurant_id", "weight_grams" },
                 values: new object[,]
                 {
                     { 1, 1, "Пицца Песто", 750m, 1, 500 },
@@ -216,30 +216,30 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Id", "CreatedAt", "CustomerId", "DeliveredAt", "RestaurantId" },
+                table: "orders",
+                columns: new[] { "id", "created_at", "customer_id", "delivered_at", "restaurant_id" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 9, 1, 12, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2026, 9, 1, 12, 35, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 2, new DateTime(2026, 9, 2, 13, 0, 0, 0, DateTimeKind.Utc), 2, new DateTime(2026, 9, 2, 13, 50, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 3, new DateTime(2026, 9, 3, 14, 0, 0, 0, DateTimeKind.Utc), 3, new DateTime(2026, 9, 3, 14, 25, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 4, new DateTime(2026, 9, 4, 15, 0, 0, 0, DateTimeKind.Utc), 4, new DateTime(2026, 9, 4, 15, 45, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 5, new DateTime(2026, 9, 5, 16, 0, 0, 0, DateTimeKind.Utc), 5, new DateTime(2026, 9, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 6, new DateTime(2026, 9, 6, 17, 0, 0, 0, DateTimeKind.Utc), 6, new DateTime(2026, 9, 6, 17, 40, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 7, new DateTime(2026, 9, 7, 18, 0, 0, 0, DateTimeKind.Utc), 7, new DateTime(2026, 9, 7, 18, 20, 0, 0, DateTimeKind.Unspecified), 4 },
-                    { 8, new DateTime(2026, 9, 8, 19, 45, 0, 0, DateTimeKind.Utc), 8, new DateTime(2026, 9, 8, 19, 55, 0, 0, DateTimeKind.Unspecified), 5 },
-                    { 9, new DateTime(2026, 9, 9, 10, 0, 0, 0, DateTimeKind.Utc), 9, new DateTime(2026, 9, 9, 10, 10, 0, 0, DateTimeKind.Unspecified), 8 },
-                    { 10, new DateTime(2026, 9, 10, 11, 0, 0, 0, DateTimeKind.Utc), 10, new DateTime(2026, 9, 10, 11, 30, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 11, new DateTime(2026, 9, 11, 12, 0, 0, 0, DateTimeKind.Utc), 1, new DateTime(2026, 9, 11, 12, 25, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 12, new DateTime(2026, 9, 12, 13, 0, 0, 0, DateTimeKind.Utc), 3, new DateTime(2026, 9, 12, 13, 30, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 13, new DateTime(2026, 9, 13, 14, 0, 0, 0, DateTimeKind.Utc), 4, new DateTime(2026, 9, 13, 14, 20, 0, 0, DateTimeKind.Unspecified), 7 },
-                    { 14, new DateTime(2026, 9, 14, 15, 0, 0, 0, DateTimeKind.Utc), 5, new DateTime(2026, 9, 14, 15, 35, 0, 0, DateTimeKind.Unspecified), 2 },
-                    { 15, new DateTime(2026, 9, 15, 16, 0, 0, 0, DateTimeKind.Utc), 6, null, 8 }
+                    { 1, new DateTime(2026, 9, 1, 12, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2026, 9, 1, 12, 35, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 2, new DateTime(2026, 9, 2, 13, 0, 0, 0, DateTimeKind.Unspecified), 2, new DateTime(2026, 9, 2, 13, 50, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 3, new DateTime(2026, 9, 3, 14, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2026, 9, 3, 14, 25, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 4, new DateTime(2026, 9, 4, 15, 0, 0, 0, DateTimeKind.Unspecified), 4, new DateTime(2026, 9, 4, 15, 45, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 5, new DateTime(2026, 9, 5, 16, 0, 0, 0, DateTimeKind.Unspecified), 5, new DateTime(2026, 9, 5, 16, 30, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 6, new DateTime(2026, 9, 6, 17, 0, 0, 0, DateTimeKind.Unspecified), 6, new DateTime(2026, 9, 6, 17, 40, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 7, new DateTime(2026, 9, 7, 18, 0, 0, 0, DateTimeKind.Unspecified), 7, new DateTime(2026, 9, 7, 18, 20, 0, 0, DateTimeKind.Unspecified), 4 },
+                    { 8, new DateTime(2026, 9, 8, 19, 45, 0, 0, DateTimeKind.Unspecified), 8, new DateTime(2026, 9, 8, 19, 55, 0, 0, DateTimeKind.Unspecified), 5 },
+                    { 9, new DateTime(2026, 9, 9, 10, 0, 0, 0, DateTimeKind.Unspecified), 9, new DateTime(2026, 9, 9, 10, 10, 0, 0, DateTimeKind.Unspecified), 8 },
+                    { 10, new DateTime(2026, 9, 10, 11, 0, 0, 0, DateTimeKind.Unspecified), 10, new DateTime(2026, 9, 10, 11, 30, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 11, new DateTime(2026, 9, 11, 12, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2026, 9, 11, 12, 25, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 12, new DateTime(2026, 9, 12, 13, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2026, 9, 12, 13, 30, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 13, new DateTime(2026, 9, 13, 14, 0, 0, 0, DateTimeKind.Unspecified), 4, new DateTime(2026, 9, 13, 14, 20, 0, 0, DateTimeKind.Unspecified), 7 },
+                    { 14, new DateTime(2026, 9, 14, 15, 0, 0, 0, DateTimeKind.Unspecified), 5, new DateTime(2026, 9, 14, 15, 35, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 15, new DateTime(2026, 9, 15, 16, 0, 0, 0, DateTimeKind.Unspecified), 6, null, 8 }
                 });
 
             migrationBuilder.InsertData(
-                table: "OrderItems",
-                columns: new[] { "Id", "DishId", "OrderId", "Quantity" },
+                table: "order_items",
+                columns: new[] { "id", "dish_id", "order_id", "quantity" },
                 values: new object[,]
                 {
                     { 1, 1, 1, 1 },
@@ -264,56 +264,56 @@ namespace FoodDelivery.Infrastructure.EfCore.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dishes_CategoryId",
-                table: "Dishes",
-                column: "CategoryId");
+                name: "IX_dishes_category_id",
+                table: "dishes",
+                column: "category_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dishes_RestaurantId",
-                table: "Dishes",
-                column: "RestaurantId");
+                name: "IX_dishes_restaurant_id",
+                table: "dishes",
+                column: "restaurant_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_DishId",
-                table: "OrderItems",
-                column: "DishId");
+                name: "IX_order_items_dish_id",
+                table: "order_items",
+                column: "dish_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_OrderId",
-                table: "OrderItems",
-                column: "OrderId");
+                name: "IX_order_items_order_id",
+                table: "order_items",
+                column: "order_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CustomerId",
-                table: "Orders",
-                column: "CustomerId");
+                name: "IX_orders_customer_id",
+                table: "orders",
+                column: "customer_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_RestaurantId",
-                table: "Orders",
-                column: "RestaurantId");
+                name: "IX_orders_restaurant_id",
+                table: "orders",
+                column: "restaurant_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderItems");
+                name: "order_items");
 
             migrationBuilder.DropTable(
-                name: "Dishes");
+                name: "dishes");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "orders");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "categories");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "customers");
 
             migrationBuilder.DropTable(
-                name: "Restaurants");
+                name: "restaurants");
         }
     }
 }

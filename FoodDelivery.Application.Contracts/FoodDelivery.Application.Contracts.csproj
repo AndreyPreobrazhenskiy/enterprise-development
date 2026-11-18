@@ -7,8 +7,4 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FoodDelivery.Domain\FoodDelivery.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,4 +1,4 @@
-﻿using FoodDelivery.Application.Contracts.Interfaces;
+﻿using FoodDelivery.Domain.Repositories;
 using FoodDelivery.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

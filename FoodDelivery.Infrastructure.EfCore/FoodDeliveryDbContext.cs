@@ -39,25 +39,199 @@ public class FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> optio
     /// </summary>
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Order>(entity =>
+        modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasOne(e => e.Customer).WithMany().HasForeignKey(e => e.CustomerId).OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.Restaurant).WithMany().HasForeignKey(e => e.RestaurantId).OnDelete(DeleteBehavior.Restrict);
-            entity.HasMany(e => e.Items).WithOne().HasForeignKey(oi => oi.OrderId).OnDelete(DeleteBehavior.Cascade);
-            entity.Property(e => e.CreatedAt).HasColumnType("timestamp without time zone");
-            entity.Property(e => e.DeliveredAt).HasColumnType("timestamp without time zone");
-            entity.Ignore(e => e.TotalAmount);
+            entity.ToTable("categories");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.Name)
+                .HasColumnName("name")
+                .HasMaxLength(100)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.ToTable("customers");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.LastName)
+                .HasColumnName("last_name")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            entity.Property(x => x.FirstName)
+                .HasColumnName("first_name")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            entity.Property(x => x.Patronymic)
+                .HasColumnName("patronymic")
+                .HasMaxLength(100)
+                .IsRequired(false);
+
+            entity.Property(x => x.Phone)
+                .HasColumnName("phone")
+                .HasMaxLength(20)
+                .IsRequired();
+
+            entity.Property(x => x.DeliveryAddress)
+                .HasColumnName("delivery_address")
+                .HasMaxLength(250)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<Restaurant>(entity =>
+        {
+            entity.ToTable("restaurants");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.Name)
+                .HasColumnName("name")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            entity.Property(x => x.Address)
+                .HasColumnName("address")
+                .HasMaxLength(250)
+                .IsRequired();
+
+            entity.Property(x => x.Rating)
+                .HasColumnName("rating");
+
+            entity.Property(x => x.OpeningTime)
+                .HasColumnName("opening_time");
+
+            entity.Property(x => x.ClosingTime)
+                .HasColumnName("closing_time");
         });
 
         modelBuilder.Entity<Dish>(entity =>
         {
-            entity.HasOne(e => e.Category).WithMany().HasForeignKey(e => e.CategoryId).OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.Restaurant).WithMany(r => r.Dishes).HasForeignKey(e => e.RestaurantId).OnDelete(DeleteBehavior.Restrict);
-            entity.Property(e => e.Price).HasPrecision(18, 2);
+            entity.ToTable("dishes");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.Name)
+                .HasColumnName("name")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            entity.Property(x => x.WeightGrams)
+                .HasColumnName("weight_grams");
+
+            entity.Property(x => x.Price)
+                .HasColumnName("price")
+                .HasPrecision(18, 2);
+
+            entity.Property(x => x.CategoryId)
+                .HasColumnName("category_id");
+
+            entity.Property(x => x.RestaurantId)
+                .HasColumnName("restaurant_id");
+
+            entity.HasOne(x => x.Category)
+                .WithMany()
+                .HasForeignKey(x => x.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(x => x.Restaurant)
+                .WithMany(x => x.Dishes)
+                .HasForeignKey(x => x.RestaurantId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.ToTable("orders");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.CustomerId)
+                .HasColumnName("customer_id");
+
+            entity.Property(x => x.RestaurantId)
+                .HasColumnName("restaurant_id");
+
+            entity.Property(x => x.CreatedAt)
+                .HasColumnName("created_at")
+                .HasColumnType("timestamp without time zone")
+                .IsRequired();
+
+            entity.Property(x => x.DeliveredAt)
+                .HasColumnName("delivered_at")
+                .HasColumnType("timestamp without time zone")
+                .IsRequired(false);
+
+            entity.HasOne(x => x.Customer)
+                .WithMany()
+                .HasForeignKey(x => x.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(x => x.Restaurant)
+                .WithMany()
+                .HasForeignKey(x => x.RestaurantId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany(x => x.Items)
+                .WithOne()
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Ignore(x => x.TotalAmount);
+        });
+
+        modelBuilder.Entity<OrderItem>(entity =>
+        {
+            entity.ToTable("order_items");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.OrderId)
+                .HasColumnName("order_id");
+
+            entity.Property(x => x.DishId)
+                .HasColumnName("dish_id");
+
+            entity.Property(x => x.Quantity)
+                .HasColumnName("quantity");
+
+            entity.HasOne(x => x.Dish)
+                .WithMany()
+                .HasForeignKey(x => x.DishId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         SeedData(modelBuilder);
