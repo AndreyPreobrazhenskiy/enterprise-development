@@ -9,9 +9,9 @@ namespace FoodDelivery.Application.Services;
 /// Реализует прикладные операции над блюдами
 /// </summary>
 public class DishService(
-    IDishRepository dishRepository,
-    ICategoryRepository categoryRepository,
-    IRestaurantRepository restaurantRepository)
+    IRepository<Dish> dishRepository,
+    IRepository<Category> categoryRepository,
+    IRepository<Restaurant> restaurantRepository)
     : IDishService
 {
     /// <inheritdoc />

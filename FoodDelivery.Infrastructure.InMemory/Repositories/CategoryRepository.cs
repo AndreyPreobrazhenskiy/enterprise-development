@@ -8,8 +8,7 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// Реализует репозиторий категорий
 /// </summary>
 public class CategoryRepository()
-    : InMemoryRepository<Category>(TestData.Categories),
-      ICategoryRepository
+    : InMemoryRepository<Category>(TestData.Categories)
 {
     /// <inheritdoc />
     public override async Task<Category?> UpdateAsync(Category category)

@@ -9,7 +9,7 @@ namespace FoodDelivery.Application.Services;
 /// Реализует прикладные операции над ресторанами
 /// </summary>
 public class RestaurantService(
-    IRestaurantRepository restaurantRepository)
+    IRepository<Restaurant> restaurantRepository)
     : IRestaurantService
 {
     /// <inheritdoc />

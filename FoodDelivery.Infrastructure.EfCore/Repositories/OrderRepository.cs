@@ -34,28 +34,6 @@ public class OrderRepository(FoodDeliveryDbContext dbContext)
     }
 
     /// <inheritdoc />
-    public override async Task<Order?> UpdateAsync(Order order)
-    {
-        var existingOrder = await GetByIdAsync(order.Id);
-
-        if (existingOrder is null)
-        {
-            return null;
-        }
-
-        existingOrder.CustomerId = order.CustomerId;
-        existingOrder.Customer = order.Customer;
-        existingOrder.RestaurantId = order.RestaurantId;
-        existingOrder.Restaurant = order.Restaurant;
-        existingOrder.CreatedAt = order.CreatedAt;
-        existingOrder.DeliveredAt = order.DeliveredAt;
-
-        await DbContext.SaveChangesAsync();
-
-        return existingOrder;
-    }
-
-    /// <inheritdoc />
     public override async Task<bool> DeleteAsync(int id)
     {
         var order = await DbContext.Orders

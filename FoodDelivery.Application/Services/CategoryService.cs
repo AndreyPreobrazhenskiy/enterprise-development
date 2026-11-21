@@ -8,7 +8,7 @@ namespace FoodDelivery.Application.Services;
 /// <summary>
 /// Реализует прикладные операции над категориями
 /// </summary>
-public class CategoryService(ICategoryRepository categoryRepository) : ICategoryService
+public class CategoryService(IRepository<Category> categoryRepository) : ICategoryService
 {
     /// <inheritdoc />
     public async Task<CategoryDto> CreateAsync(CategoryCreateUpdateDto dto)

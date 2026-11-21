@@ -10,8 +10,8 @@ namespace FoodDelivery.Application.Services;
 /// </summary>
 public class OrderService(
     IOrderRepository orderRepository,
-    ICustomerRepository customerRepository,
-    IRestaurantRepository restaurantRepository)
+    IRepository<Customer> customerRepository,
+    IRepository<Restaurant> restaurantRepository)
     : IOrderService
 {
     /// <inheritdoc />

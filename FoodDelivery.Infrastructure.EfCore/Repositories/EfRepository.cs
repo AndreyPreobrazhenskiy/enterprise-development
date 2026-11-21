@@ -7,7 +7,7 @@ namespace FoodDelivery.Infrastructure.EfCore.Repositories;
 /// <summary>
 /// Предоставляет базовую реализацию репозитория с использованием efcore
 /// </summary>
-public abstract class EfRepository<T>(FoodDeliveryDbContext dbContext) : IRepository<T> where T : class, IEntity
+public class EfRepository<T>(FoodDeliveryDbContext dbContext) : IRepository<T> where T : class, IEntity
 {
     /// <summary>
     /// Контекст бд

@@ -8,8 +8,7 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// Реализует репозиторий блюд
 /// </summary>
 public class DishRepository()
-    : InMemoryRepository<Dish>(TestData.Dishes),
-      IDishRepository
+    : InMemoryRepository<Dish>(TestData.Dishes)
 {
     /// <inheritdoc />
     public override async Task<Dish?> UpdateAsync(Dish dish)

@@ -9,9 +9,9 @@ namespace FoodDelivery.Application.Services;
 /// Реализует прикладные операции над позициями заказов
 /// </summary>
 public class OrderItemService(
-    IOrderItemRepository orderItemRepository,
+    IRepository<OrderItem> orderItemRepository,
     IOrderRepository orderRepository,
-    IDishRepository dishRepository)
+    IRepository<Dish> dishRepository)
     : IOrderItemService
 {
     /// <inheritdoc />

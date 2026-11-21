@@ -8,8 +8,7 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// Реализует репозиторий позиций заказов
 /// </summary>
 public class OrderItemRepository()
-    : InMemoryRepository<OrderItem>(TestData.OrderItems),
-      IOrderItemRepository
+    : InMemoryRepository<OrderItem>(TestData.OrderItems)
 {
     /// <inheritdoc />
     public override async Task<OrderItem?> UpdateAsync(OrderItem orderItem)

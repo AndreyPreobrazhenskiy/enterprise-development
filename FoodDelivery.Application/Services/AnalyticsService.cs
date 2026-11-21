@@ -1,5 +1,6 @@
 ﻿using FoodDelivery.Application.Contracts.DTOs.Analytics;
 using FoodDelivery.Application.Contracts.Interfaces;
+using FoodDelivery.Domain.Entities;
 using FoodDelivery.Domain.Repositories;
 
 namespace FoodDelivery.Application.Services;
@@ -9,7 +10,7 @@ namespace FoodDelivery.Application.Services;
 /// </summary>
 public class AnalyticsService(
     IOrderRepository orderRepository,
-    ICategoryRepository categoryRepository)
+    IRepository<Category> categoryRepository)
     : IAnalyticsService
 {
     /// <inheritdoc />

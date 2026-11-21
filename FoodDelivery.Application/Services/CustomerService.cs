@@ -8,7 +8,7 @@ namespace FoodDelivery.Application.Services;
 /// <summary>
 /// Реализует прикладные операции над покупателями.
 /// </summary>
-public class CustomerService(ICustomerRepository customerRepository) : ICustomerService
+public class CustomerService(IRepository<Customer> customerRepository) : ICustomerService
 {
     /// <inheritdoc />
     public async Task<CustomerDto> CreateAsync(CustomerCreateUpdateDto dto)

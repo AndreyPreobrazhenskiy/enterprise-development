@@ -8,8 +8,7 @@ namespace FoodDelivery.Infrastructure.InMemory.Repositories;
 /// Реализует репозиторий покупателей
 /// </summary>
 public class CustomerRepository()
-    : InMemoryRepository<Customer>(TestData.Customers),
-      ICustomerRepository
+    : InMemoryRepository<Customer>(TestData.Customers)
 {
     /// <inheritdoc />
     public override async Task<Customer?> UpdateAsync(Customer customer)
